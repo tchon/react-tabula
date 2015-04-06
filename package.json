@@ -1,0 +1,46 @@
+{
+  "name": "react-tabula",
+  "version": "0.0.1",
+  "description": "React table component",
+  "main": "main.js",
+  "scripts": {
+    "serve": "cd site && python -m SimpleHTTPServer",
+    "start": "npm run webpack & npm run serve",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "webpack": "webpack -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tchon/react-tabula"
+  },
+  "keywords": [
+    "react",
+    "react-component",
+    "table",
+    "data-table"
+  ],
+  "author": "Timothy Chon",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tchon/react-tabula/issues"
+  },
+  "homepage": "https://github.com/tchon/react-tabula",
+  "dependencies": {
+    "react": "^0.13.1"
+  },
+  "devDependencies": {
+    "classnames": "^1.2.0",
+    "css-loader": "^0.9.1",
+    "file-loader": "^0.8.1",
+    "html-loader": "^0.2.3",
+    "jsx-loader": "^0.13.1",
+    "less": "^2.5.0",
+    "less-loader": "^2.2.0",
+    "react-tools": "^0.13.1",
+    "rewire": "^2.3.1",
+    "rewire-webpack": "^1.0.0",
+    "style-loader": "^0.9.0",
+    "webpack": "^1.7.3",
+    "webpack-dev-server": "^1.8.0"
+  }
+}
