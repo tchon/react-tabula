@@ -1,5 +1,5 @@
 var React = require('react'),
-    Component = require('./component');
+    Component = require('./component.js');
 
 var App = React.createClass({
 
