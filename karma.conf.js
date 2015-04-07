@@ -1,43 +1,35 @@
-module.exports = function(config) {
-  'use strict';
+module.exports = function (config) {
   config.set({
-    basePath: '',
-    frameworks: [
-      'mocha',
-      //'chai',
-      //'sinon'
-    ],
+    browsers: [ process.env.CONTINUOUS_INTEGRATION ? 'Firefox' : 'Chrome' ],
+    //browsers: ['PhantomJS'],
+
+    singleRun: process.env.CONTINUOUS_INTEGRATION == 'true',
+
+    frameworks: [ 'mocha' ],
+
     files: [
-      'test/*.js'
+      'node_modules/karma-phantomjs-shim/shim.js',
+      'tests.webpack.js'
     ],
-    exclude: [
-      'karma.conf.js'
-    ],
+
     preprocessors: {
+      'tests.webpack.js': [ 'webpack', 'sourcemap' ]
     },
-    reporters: ['progress'],
-    port: 9876,
-    runnerPort: 9100,
-    colors: true,
-    logLevel: config.LOG_INFO,
-    //logLevel: config.LOG_DEBUG,
-    autoWatch: false,
-    captureTimeout: 6000,
-    singleRun: true,
 
-    //browsers: ['PhantomJS', 'Chrome', 'Firefox']
-    //browsers: ['PhantomJS', 'Firefox'],
-    browsers: ['PhantomJS'],
-    //browsers: ['Firefox'],
+    reporters: [ 'progress' ],
 
-    plugins: [
-        'karma-mocha',
-        //'karma-chai',
-        //'karma-sinon',
-        //'karma-chrome-launcher',
-        //'karma-firefox-launcher',
-        'karma-phantomjs-launcher',
-        //'karma-coverage'
-    ]
+    webpack: {
+      devtool: 'inline-source-map',
+      module: {
+        loaders: [
+          { test: /\.js$/, loader: 'babel-loader' }
+        ]
+      }
+    },
+
+    webpackServer: {
+      noInfo: true
+    }
+
   });
 };
