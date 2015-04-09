@@ -1,0 +1,21 @@
+env:
+  browser: true
+  node: true
+  jasmine: true
+
+globals:
+  jest: false
+
+ecmaFeatures:
+  arrowFunctions: true
+  classes: true
+  destructuring: true
+  objectLiteralShorthandMethods: true
+  templateStrings: true
+  jsx: true
+
+rules:
+  semi: true
+  quotes: [ 2, 'single' ]
+  curly: [ 2, 'multi-line' ]
+  no-underscore-dangle: false
