@@ -18,9 +18,36 @@ var DataTable = React.createClass({
 
     return (
       <div className={this.props.className}>
-        <div className="row ns-spacer-vertical"></div>
+        <div className="row ns-spacer-vertical">
+        </div>
         <div className="row">
-          <div className="col-xs-8"></div>
+          <div className="col-xs-8">
+
+            <div className="btn-toolbar" role="toolbar" aria-label="...">
+
+              <div className="btn-group">
+                <button type="button" className="btn btn-default">Configure</button>
+                <button type="button" className="btn btn-default dropdown-toggle"
+                  data-toggle="dropdown" aria-expanded="false">
+                  <span className="caret"></span>
+                  <span className="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul className="dropdown-menu" role="menu">
+
+                  <li><a href="#">Columns 1</a></li>
+                  <li><a href="#">Columns 2</a></li>
+                  <li><a href="#">Columns 3</a></li>
+
+                  <li class="divider"></li>
+                  <li><a href="#">Configure</a></li>
+                </ul>
+              </div>
+              <div className="btn-group">
+                <button type="button" className="btn btn-default">Export</button>
+              </div>
+            </div>
+
+          </div>
           <div className="col-xs-4 pull-right">
             <SearchField
               id="search-field"
