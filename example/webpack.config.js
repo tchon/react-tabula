@@ -11,7 +11,7 @@ module.exports = {
   resolve: {
     alias: {
       // Use uncompiled version
-      'react-data-components': '../../src'
+      'react-tabula': '../../src'
     }
   },
   module: {

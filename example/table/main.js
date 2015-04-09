@@ -1,7 +1,7 @@
 require('../../css/table-twbs.css');
 
 var React = require('react');
-var { DataTable } = require('react-data-components');
+var { DataTable } = require('react-tabula');
 var d3 = require('d3');
 
 function buildTable(data) {

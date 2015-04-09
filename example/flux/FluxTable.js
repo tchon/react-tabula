@@ -1,6 +1,6 @@
 var React = require('react');
 var { Table, Pagination, SelectField, SearchField } =
-  require('react-data-components');
+  require('react-tabula');
 var DataStore = require('./DataStore');
 var ViewActionCreators = require('./ViewActionCreators');
 

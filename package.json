@@ -58,6 +58,7 @@
   "scripts": {
     "prepublish": "./node_modules/react-tools/bin/jsx --harmony --no-cache-dir src lib",
     "start": "cd example && webpack-dev-server --progress --colors --hot --inline",
+    "build": "webpack && webpack --config webpack.config.min.js",
     "test": "jest"
   },
   "jest": {
