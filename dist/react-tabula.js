@@ -144,7 +144,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                React.createElement(PageItems, {
 	                  id: "page-items", 
 	                  className: "page-items pull-left", 
-	                  dataLength: page.dataLength, 
+	                  dataSize: page.dataSize, 
 	                  startIndex: page.startIndex, 
 	                  endIndex: page.endIndex}
 	                ), 
@@ -368,12 +368,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	function PageItems(){}
 
 	  Object.defineProperty(PageItems.prototype,"render",{writable:true,configurable:true,value:function() {
-	    var $__0=    this.props,dataLength=$__0.dataLength,startIndex=$__0.startIndex,endIndex=$__0.endIndex;
+	    var $__0=    this.props,dataSize=$__0.dataSize,startIndex=$__0.startIndex,endIndex=$__0.endIndex;
 	    var start = startIndex + 1;
 
 	    return (
 	      React.createElement("div", {className: "ns-inline-block pull-left ns-page-items"}, 
-	        "Items ", start, " – ", endIndex, " of ", dataLength, 
+	        "Items ", start, " – ", endIndex, " of ", dataSize, 
 	        React.createElement("span", {className: "ns-spacer-horizontal"})
 	      )
 	    );
@@ -675,7 +675,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    return {
 	      data: data.slice(start, end),
-	      dataLength: data.length,
+	      dataSize: data.length,
 	      currentPage: currentPage,
 	      startIndex: start,
 	      endIndex: endIndex,

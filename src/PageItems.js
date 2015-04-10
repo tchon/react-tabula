@@ -5,12 +5,12 @@ var React = require('react');
 class PageItems {
 
   render() {
-    var {dataLength, startIndex, endIndex} = this.props;
+    var {dataSize, startIndex, endIndex} = this.props;
     var start = startIndex + 1;
 
     return (
       <div className="ns-inline-block pull-left ns-page-items">
-        Items {start} &ndash; {endIndex} of {dataLength}
+        Items {start} &ndash; {endIndex} of {dataSize}
         <span className="ns-spacer-horizontal"></span>
       </div>
     );

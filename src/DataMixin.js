@@ -73,7 +73,7 @@ module.exports = {
 
     return {
       data: data.slice(start, end),
-      dataLength: data.length,
+      dataSize: data.length,
       currentPage: currentPage,
       startIndex: start,
       endIndex: endIndex,

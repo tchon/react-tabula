@@ -74,7 +74,7 @@ var DataTable = React.createClass({
                 <PageItems
                   id="page-items"
                   className="page-items pull-left"
-                  dataLength={page.dataLength}
+                  dataSize={page.dataSize}
                   startIndex={page.startIndex}
                   endIndex={page.endIndex}
                 />
