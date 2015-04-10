@@ -88,9 +88,36 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    return (
 	      React.createElement("div", {className: this.props.className}, 
-	        React.createElement("div", {className: "row ns-spacer-vertical"}), 
+	        React.createElement("div", {className: "row ns-spacer-vertical"}
+	        ), 
 	        React.createElement("div", {className: "row"}, 
-	          React.createElement("div", {className: "col-xs-8"}), 
+	          React.createElement("div", {className: "col-xs-8"}, 
+
+	            React.createElement("div", {className: "btn-toolbar", role: "toolbar", "aria-label": "..."}, 
+
+	              React.createElement("div", {className: "btn-group"}, 
+	                React.createElement("button", {type: "button", className: "btn btn-default"}, "Configure"), 
+	                React.createElement("button", {type: "button", className: "btn btn-default dropdown-toggle", 
+	                  "data-toggle": "dropdown", "aria-expanded": "false"}, 
+	                  React.createElement("span", {className: "caret"}), 
+	                  React.createElement("span", {className: "sr-only"}, "Toggle Dropdown")
+	                ), 
+	                React.createElement("ul", {className: "dropdown-menu", role: "menu"}, 
+
+	                  React.createElement("li", null, React.createElement("a", {href: "#"}, "Columns 1")), 
+	                  React.createElement("li", null, React.createElement("a", {href: "#"}, "Columns 2")), 
+	                  React.createElement("li", null, React.createElement("a", {href: "#"}, "Columns 3")), 
+
+	                  React.createElement("li", {class: "divider"}), 
+	                  React.createElement("li", null, React.createElement("a", {href: "#"}, "Configure"))
+	                )
+	              ), 
+	              React.createElement("div", {className: "btn-group"}, 
+	                React.createElement("button", {type: "button", className: "btn btn-default"}, "Export")
+	              )
+	            )
+
+	          ), 
 	          React.createElement("div", {className: "col-xs-4 pull-right"}, 
 	            React.createElement(SearchField, {
 	              id: "search-field", 
