@@ -88,8 +88,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    return (
 	      React.createElement("div", {className: this.props.className}, 
-	        React.createElement("div", {className: "row ns-spacer-vertical"}
-	        ), 
 	        React.createElement("div", {className: "row"}, 
 	          React.createElement("div", {className: "col-xs-8"}, 
 

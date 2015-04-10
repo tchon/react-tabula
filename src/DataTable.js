@@ -18,8 +18,6 @@ var DataTable = React.createClass({
 
     return (
       <div className={this.props.className}>
-        <div className="row ns-spacer-vertical">
-        </div>
         <div className="row">
           <div className="col-xs-8">
 
