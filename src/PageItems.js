@@ -1,6 +1,11 @@
 'use strict';
 
 var React = require('react');
+var numeral = require('numeral');
+
+function prettyInt(num) {
+  return numeral(num).format('0,0');
+}
 
 class PageItems {
 
@@ -10,7 +15,7 @@ class PageItems {
 
     return (
       <div className="ns-inline-block pull-left ns-page-items">
-        Items {start} &ndash; {endIndex} of {dataSize}
+        Items {prettyInt(start)} &ndash; {prettyInt(endIndex)} of {prettyInt(dataSize)}
         <span className="ns-spacer-horizontal"></span>
       </div>
     );
