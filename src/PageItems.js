@@ -5,8 +5,7 @@ var React = require('react');
 class PageItems {
 
   render() {
-    var self = this;
-    var {id, dataLength, startIndex, endIndex} = this.props;
+    var {dataLength, startIndex, endIndex} = this.props;
     var start = startIndex + 1;
 
     return (

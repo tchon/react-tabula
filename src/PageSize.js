@@ -14,10 +14,15 @@ class PageSize {
 
   render() {
     var self = this;
-    var {id, label, options, value} = this.props;
+    var {options, value} = this.props;
     var isActive = (size) => size === value ? "active" : "";
     var mappedOpts =
-      options.map((size) => <li role="presentation" className={isActive(size)}><a className="ns-page-size-option" href="#" onClick={self.onChange}>{size}</a></li>);
+      options.map(
+        (size) =>
+          <li role="presentation" className={isActive(size)}>
+            <a className="ns-page-size-option" href="#" onClick={self.onChange}>{size}</a>
+          </li>
+      );
 
     return (
       <div className="ns-inline ns-page-size-width">

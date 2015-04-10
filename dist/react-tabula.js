@@ -368,8 +368,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function PageItems(){}
 
 	  Object.defineProperty(PageItems.prototype,"render",{writable:true,configurable:true,value:function() {
-	    var self = this;
-	    var $__0=     this.props,id=$__0.id,dataLength=$__0.dataLength,startIndex=$__0.startIndex,endIndex=$__0.endIndex;
+	    var $__0=    this.props,dataLength=$__0.dataLength,startIndex=$__0.startIndex,endIndex=$__0.endIndex;
 	    var start = startIndex + 1;
 
 	    return (
@@ -405,10 +404,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  Object.defineProperty(PageSize.prototype,"render",{writable:true,configurable:true,value:function() {
 	    var self = this;
-	    var $__0=     this.props,id=$__0.id,label=$__0.label,options=$__0.options,value=$__0.value;
+	    var $__0=   this.props,options=$__0.options,value=$__0.value;
 	    var isActive = function(size)  {return size === value ? "active" : "";};
 	    var mappedOpts =
-	      options.map(function(size)  {return React.createElement("li", {role: "presentation", className: isActive(size)}, React.createElement("a", {className: "ns-page-size-option", href: "#", onClick: self.onChange}, size));});
+	      options.map(
+	        function(size) 
+	          {return React.createElement("li", {role: "presentation", className: isActive(size)}, 
+	            React.createElement("a", {className: "ns-page-size-option", href: "#", onClick: self.onChange}, size)
+	          );}
+	      );
 
 	    return (
 	      React.createElement("div", {className: "ns-inline ns-page-size-width"}, 
@@ -513,35 +517,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	      React.createElement("ul", {className: this.props.className, "aria-label": "Pagination"}, 
 	        React.createElement("li", {className: !isNotFirst ? 'disabled' : null}, 
 	          React.createElement("a", {role: "button", href: "#", tabIndex: "0", 
-	            onClick: firstHandler, 
-	            "aria-disabled": !isNotFirst, 
-	            "aria-label": "First"}, 
-	            React.createElement("span", {className: "fa fa-angle-double-left", "aria-hidden": "true"})
-	          )
-	        ), 
-	        React.createElement("li", {className: !isNotFirst ? 'disabled' : null}, 
-	          React.createElement("a", {role: "button", href: "#", tabIndex: "0", 
 	            onClick: prevHandler, 
 	            "aria-disabled": !isNotFirst, 
 	            "aria-label": "Previous"}, 
 	            React.createElement("span", {className: "fa fa-angle-left", "aria-hidden": "true"})
 	          )
 	        ), 
+
 	        buttons, 
+
 	        React.createElement("li", {className: !isNotLast ? 'disabled' : null}, 
 	          React.createElement("a", {role: "button", href: "#", tabIndex: "0", 
 	            onClick: nextHandler, 
 	            "aria-disabled": !isNotLast, 
 	            "aria-label": "Next"}, 
 	            React.createElement("span", {className: "fa fa-angle-right", "aria-hidden": "true"})
-	          )
-	        ), 
-	        React.createElement("li", {className: !isNotLast ? 'disabled' : null}, 
-	          React.createElement("a", {role: "button", href: "#", tabIndex: "0", 
-	            onClick: lastHandler, 
-	            "aria-disabled": !isNotLast, 
-	            "aria-label": "Last"}, 
-	            React.createElement("span", {className: "fa fa-angle-double-right", "aria-hidden": "true"})
 	          )
 	        )
 	      )
