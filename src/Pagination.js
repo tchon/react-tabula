@@ -78,35 +78,21 @@ class Pagination {
       <ul className={this.props.className} aria-label="Pagination">
         <li className={!isNotFirst ? 'disabled' : null}>
           <a role="button" href="#" tabIndex="0"
-            onClick={firstHandler}
-            aria-disabled={!isNotFirst}
-            aria-label="First">
-            <span className="fa fa-angle-double-left" aria-hidden="true" />
-          </a>
-        </li>
-        <li className={!isNotFirst ? 'disabled' : null}>
-          <a role="button" href="#" tabIndex="0"
             onClick={prevHandler}
             aria-disabled={!isNotFirst}
             aria-label="Previous">
-            <span className="fa fa-angle-left" aria-hidden="true" />
+            <span className="fa fa-angle-left" aria-hidden="true"></span>
           </a>
         </li>
+
         {buttons}
+
         <li className={!isNotLast ? 'disabled' : null}>
           <a role="button" href="#" tabIndex="0"
             onClick={nextHandler}
             aria-disabled={!isNotLast}
             aria-label="Next">
-            <span className="fa fa-angle-right" aria-hidden="true" />
-          </a>
-        </li>
-        <li className={!isNotLast ? 'disabled' : null}>
-          <a role="button" href="#" tabIndex="0"
-            onClick={lastHandler}
-            aria-disabled={!isNotLast}
-            aria-label="Last">
-            <span className="fa fa-angle-double-right" aria-hidden="true" />
+            <span className="fa fa-angle-right" aria-hidden="true"></span>
           </a>
         </li>
       </ul>
