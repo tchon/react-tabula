@@ -17,15 +17,15 @@ module.exports = {
       sortBy: this.props.initialSortBy,
       filterValues: {},
       currentPage: 0,
-      pageLength: this.props.initialPageLength
+      pageSize: this.props.initialPageSize
     };
   },
 
   getDefaultProps() {
     return {
-      initialPageLength: 5,
-      pageLengthMax: 20,
-      pageLengthOptions: [ 5, 10, 20 ],
+      initialPageSize: 5,
+      pageSizeMax: 20,
+      pageSizeOptions: [ 5, 10, 20 ],
       filters: {
         globalSearch: {
           filter: containsIgnoreCase
@@ -66,24 +66,25 @@ module.exports = {
 
   // Pagination
   buildPage() {
-    var {data, currentPage, pageLength} = this.state;
-    var start = pageLength * currentPage;
-    var end = start + pageLength;
+    var {data, currentPage, pageSize} = this.state;
+    var start = pageSize * currentPage;
+    var end = start + pageSize;
+    var endIndex = data.length > end ? end : data.length;
 
     return {
       data: data.slice(start, end),
       dataLength: data.length,
       currentPage: currentPage,
       startIndex: start,
-      endIndex: end,
-      totalPages: Math.ceil(data.length / pageLength)
+      endIndex: endIndex,
+      totalPages: Math.ceil(data.length / pageSize)
     };
   },
 
   onChangePage(pageNumber) {
-    var pageLength = this.state.pageLength;
-    var start = pageLength * pageNumber;
-    var end = start + pageLength;
+    var pageSize = this.state.pageSize;
+    var start = pageSize * pageNumber;
+    var end = start + pageSize;
 
     this.setState({
       currentPage: pageNumber,
@@ -92,16 +93,16 @@ module.exports = {
     });
   },
 
-  onPageLengthChange(value) {
-    var newPageLength = +value;
-    var {currentPage, pageLength} = this.state;
-    var newPage = Math.floor((currentPage * pageLength) / newPageLength);
+  onPageSizeChange(value) {
+    var newPageSize = +value;
+    var {currentPage, pageSize} = this.state;
+    var newPage = Math.floor((currentPage * pageSize) / newPageSize);
 
-    var start = newPageLength * currentPage;
-    var end = start + newPageLength;
+    var start = newPageSize * currentPage;
+    var end = start + newPageSize;
 
     this.setState({
-      pageLength: newPageLength,
+      pageSize: newPageSize,
       currentPage: newPage,
       startIndex: start,
       endIndex: end
