@@ -59,7 +59,7 @@
   "scripts": {
     "prebuild": "./node_modules/react-tools/bin/jsx --harmony --no-cache-dir src lib && webpack && webpack --config webpack.config.min.js",
     "prepublish": "./node_modules/react-tools/bin/jsx --harmony --no-cache-dir src lib",
-    "start": "cd example && webpack-dev-server --progress --colors --hot --inline",
+    "start": "cd example && webpack-dev-server --progress --colors --hot --inline --no-info",
     "build": "webpack && webpack --config webpack.config.min.js",
     "test": "jest"
   },
