@@ -19,7 +19,7 @@ class PageSize {
     var mappedOpts =
       options.map(
         (size) =>
-          <li role="presentation" className={isActive(size)}>
+          <li role="presentation" key={size} className={isActive(size)}>
             <a className="ns-page-size-option" href="#" onClick={self.onChange}>{size}</a>
           </li>
       );

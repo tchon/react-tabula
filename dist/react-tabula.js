@@ -106,7 +106,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                  React.createElement("li", null, React.createElement("a", {href: "#"}, "Columns 2")), 
 	                  React.createElement("li", null, React.createElement("a", {href: "#"}, "Columns 3")), 
 
-	                  React.createElement("li", {class: "divider"}), 
+	                  React.createElement("li", {className: "divider"}), 
 	                  React.createElement("li", null, React.createElement("a", {href: "#"}, "Configure"))
 	                )
 	              ), 
@@ -412,7 +412,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var mappedOpts =
 	      options.map(
 	        function(size) 
-	          {return React.createElement("li", {role: "presentation", className: isActive(size)}, 
+	          {return React.createElement("li", {role: "presentation", key: size, className: isActive(size)}, 
 	            React.createElement("a", {className: "ns-page-size-option", href: "#", onClick: self.onChange}, size)
 	          );}
 	      );
