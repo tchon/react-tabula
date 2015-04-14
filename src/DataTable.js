@@ -36,7 +36,7 @@ var DataTable = React.createClass({
                   <li><a href="#">Columns 2</a></li>
                   <li><a href="#">Columns 3</a></li>
 
-                  <li class="divider"></li>
+                  <li className="divider"></li>
                   <li><a href="#">Configure</a></li>
                 </ul>
               </div>
