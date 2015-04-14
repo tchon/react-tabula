@@ -2,24 +2,18 @@ require('../../css/table-twbs.css');
 
 var React = require('react');
 var { DataTable } = require('react-tabula');
-var d3 = require('d3');
+
 
 function buildTable(data) {
-  var renderMapUrl =
-    (val, row) =>
-      <a href={`https://www.google.com/maps?q=${row['LAT']},${row['LON']}`}>
-        Google Maps
-      </a>;
-
-  var tableColumns = [
+  var columnKeys = [ 'PHYLUM', 'ANIMAL GENUS', 'ANIMAL', 'WALKS', 'EATS', 'SLEEPS' ],
+    tableColumns = [
     { title: 'Phylum', prop: 'PHYLUM' },
     { title: 'Animal Genus', prop: 'ANIMAL GENUS' },
     { title: 'Animal', prop: 'ANIMAL' },
     { title: 'No. of Walks', prop: 'WALKS', defaultContent: '<none>' },
     { title: 'Meals per day', prop: 'EATS', defaultContent: '<none>' },
     { title: 'Naps per day', prop: 'SLEEPS', defaultContent: '<none>' }
-    ],
-    columnKeys = [ 'PHYLUM', 'ANIMAL GENUS', 'WALKS', 'EATS', 'SLEEPS' ];
+    ];
 
   return (
     <DataTable
@@ -35,6 +29,56 @@ function buildTable(data) {
   );
 }
 
-d3.csv('/dupe_data.csv', function(error, rows) {
-  window.tabula = React.render(buildTable(rows), document.body);
-});
+
+var records = [
+  {
+    'PHYLUM': 'Canidae',
+    'ANIMAL GENUS': 'Canis',
+    'ANIMAL': 'Labrador',
+    'WALKS': 2,
+    'EATS': 3,
+    'SLEEPS': 5
+  },
+  {
+    'PHYLUM': 'Canidae',
+    'ANIMAL GENUS': 'Canis',
+    'ANIMAL': 'Beagle',
+    'WALKS': 5,
+    'EATS': 2,
+    'SLEEPS': 1
+  },
+  {
+    'PHYLUM': 'Felidae',
+    'ANIMAL GENUS': 'Felis',
+    'ANIMAL': 'Tabby',
+    'WALKS': 1,
+    'EATS': 6,
+    'SLEEPS': 10
+  },
+  {
+    'PHYLUM': 'Felidae',
+    'ANIMAL GENUS': 'Felis',
+    'ANIMAL': 'Balinese',
+    'WALKS': 3,
+    'EATS': 2,
+    'SLEEPS': 12
+  },
+  {
+    'PHYLUM': 'Chordata',
+    'ANIMAL GENUS': 'Aves',
+    'ANIMAL': 'Finch',
+    'WALKS': 0,
+    'EATS': 10,
+    'SLEEPS': 2
+  },
+  {
+    'PHYLUM': 'Chordata',
+    'ANIMAL GENUS': 'Aves',
+    'ANIMAL': 'Crow',
+    'WALKS': 11,
+    'EATS': 3,
+    'SLEEPS': 1
+  }
+];
+
+window.tabula = React.render(buildTable(records), document.body);
