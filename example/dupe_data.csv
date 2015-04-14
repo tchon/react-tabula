@@ -1,0 +1,7 @@
+PHYLUM,ANIMAL GENUS,ANIMAL,WALKS,EATS,SLEEPS
+Canidae,Canis,Labrador,2,3,5
+Canidae,Canis,Beagle,5,2,1
+Felidae,Felis,Tabby,1,6,10
+Felidae,Felis,Balinese,3,2,12
+Chordata,Aves,Finch,0,10,2
+Chordata,Aves,Crow,11,3,1

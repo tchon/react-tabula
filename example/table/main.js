@@ -12,27 +12,29 @@ function buildTable(data) {
       </a>;
 
   var tableColumns = [
-    { title: 'Name', prop: 'NAME' },
-    { title: 'City', prop: 'CITY' },
-    { title: 'Street address', prop: 'STREET ADDRESS' },
-    { title: 'Phone', prop: 'PHONE NUMBER', defaultContent: '<no phone>' },
-    { title: 'Map', render: renderMapUrl, className: 'text-center' }
-  ];
+    { title: 'Phylum', prop: 'PHYLUM' },
+    { title: 'Animal Genus', prop: 'ANIMAL GENUS' },
+    { title: 'Animal', prop: 'ANIMAL' },
+    { title: 'No. of Walks', prop: 'WALKS', defaultContent: '<none>' },
+    { title: 'Meals per day', prop: 'EATS', defaultContent: '<none>' },
+    { title: 'Naps per day', prop: 'SLEEPS', defaultContent: '<none>' }
+    ],
+    columnKeys = [ 'PHYLUM', 'ANIMAL GENUS', 'WALKS', 'EATS', 'SLEEPS' ];
 
   return (
     <DataTable
       className="container"
-      keys={[ 'NAME', 'OUTLET TYPE', 'STREET ADDRESS' ]}
+      keys={columnKeys}
       columns={tableColumns}
       initialData={data}
       initialPageSize={15}
-      initialSortBy={{ prop: 'CITY', order: 'descending' }}
+      initialSortBy={{ prop: 'PHYLUM', order: 'ascending' }}
       pageSizeOptions={[ 5, 15, 50, 100 ]}
       pageSizeMax={100}
     />
   );
 }
 
-d3.csv('/sample_data.csv', function(error, rows) {
-  React.render(buildTable(rows), document.body);
+d3.csv('/dupe_data.csv', function(error, rows) {
+  window.tabula = React.render(buildTable(rows), document.body);
 });
