@@ -5,24 +5,42 @@ var { DataTable } = require('react-tabula');
 
 
 function buildTable(data) {
-  var columnKeys = [ 'PHYLUM', 'ANIMAL GENUS', 'ANIMAL', 'WALKS', 'EATS', 'SLEEPS' ],
-    tableColumns = [
-    { title: 'Phylum', prop: 'PHYLUM' },
-    { title: 'Animal Genus', prop: 'ANIMAL GENUS' },
-    { title: 'Animal', prop: 'ANIMAL' },
-    { title: 'No. of Walks', prop: 'WALKS', defaultContent: '<none>' },
-    { title: 'Meals per day', prop: 'EATS', defaultContent: '<none>' },
-    { title: 'Naps per day', prop: 'SLEEPS', defaultContent: '<none>' }
-    ];
+  var columnGroupA = [
+    { title: 'Phylum', prop: 'PHYLUM', group: 'A' },
+    { title: 'Animal Genus', prop: 'ANIMAL GENUS', group: 'A' },
+    { title: 'Animal', prop: 'ANIMAL', group: 'A' }
+  ];
+  var columnGroupB = [
+    { title: 'No. of Walks', prop: 'WALKS', defaultContent: '<none>', group: 'B' },
+    { title: 'Meals per day', prop: 'EATS', defaultContent: '<none>', group: 'B' },
+    { title: 'Naps per day', prop: 'SLEEPS', defaultContent: '<none>', group: 'B' }
+  ]
+  var columns = columnGroupA.concat(columnGroupB);
+  var columnKeys = columns.map(function(col) { return col.prop; });
+
+  var columnPossibleGroupA = columnGroupA.slice(0, columnGroupA.length);
+  var columnPossibleGroupB = columnGroupB.slice(0, columnGroupB.length);
+
+  columnPossibleGroupA.push({ title: 'Kingdom', prop: 'KINGDOM', group: 'A'});
+  columnPossibleGroupA.push({ title: 'Order', prop: 'ORDER', group: 'A'});
+  columnPossibleGroupA.push({ title: 'Species', prop: 'Species', group: 'A'});
+
+  columnPossibleGroupB.push({ title: 'Plays', prop: 'PLAYS', group: 'B'});
+  columnPossibleGroupB.push({ title: 'Life Expectancy', prop: 'LIFE', group: 'B'});
+  columnPossibleGroupB.push({ title: 'Reproduces', prop: 'REPRODUCE', group: 'B'});
+
+  var columnsPossible = columnPossibleGroupA.concat(columnPossibleGroupB);
 
   return (
     <DataTable
       className="container"
       keys={columnKeys}
-      columns={tableColumns}
+      columns={columns}
+      columnsPossible={columnsPossible}
       initialData={data}
       initialPageSize={15}
       initialSortBy={{ prop: 'PHYLUM', order: 'ascending' }}
+      configGroup='A'
       pageSizeOptions={[ 5, 15, 50, 100 ]}
       pageSizeMax={100}
     />
@@ -80,5 +98,8 @@ var records = [
     'SLEEPS': 1
   }
 ];
+
+// case when records is empty
+//records = [];
 
 window.tabula = React.render(buildTable(records), document.body);

@@ -1,11 +1,13 @@
 'use strict';
 
 var React = require('react');
-var Table = require('./Table');
+
+var ConfigureTable = require('./ConfigureTable');
 var PageItems = require('./PageItems');
 var PageSize = require('./PageSize');
 var Pagination = require('./Pagination');
 var SearchField = require('./SearchField');
+var Table = require('./Table');
 
 var DataMixin = require('./DataMixin');
 
@@ -22,24 +24,12 @@ var DataTable = React.createClass({
           <div className="col-xs-8">
 
             <div className="btn-toolbar" role="toolbar" aria-label="...">
+              <ConfigureTable
+                columns={this.props.columns}
+                columnsPossible={this.props.columnsPossible}
+                configGroup={this.props.configGroup}
+              />
 
-              <div className="btn-group">
-                <button type="button" className="btn btn-default">Configure</button>
-                <button type="button" className="btn btn-default dropdown-toggle"
-                  data-toggle="dropdown" aria-expanded="false">
-                  <span className="caret"></span>
-                  <span className="sr-only">Toggle Dropdown</span>
-                </button>
-                <ul className="dropdown-menu" role="menu">
-
-                  <li><a href="#">Columns 1</a></li>
-                  <li><a href="#">Columns 2</a></li>
-                  <li><a href="#">Columns 3</a></li>
-
-                  <li className="divider"></li>
-                  <li><a href="#">Configure</a></li>
-                </ul>
-              </div>
               <div className="btn-group">
                 <button type="button" className="btn btn-default">Export</button>
               </div>

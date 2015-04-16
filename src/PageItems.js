@@ -11,7 +11,7 @@ class PageItems {
 
   render() {
     var {dataSize, startIndex, endIndex} = this.props;
-    var start = startIndex + 1;
+    var start = dataSize ? startIndex + 1 : 0;
 
     return (
       <div className="ns-inline-block pull-left ns-page-items">

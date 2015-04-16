@@ -71,11 +71,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var React = __webpack_require__(9);
-	var Table = __webpack_require__(2);
+
+	var ConfigureTable = __webpack_require__(10);
 	var PageItems = __webpack_require__(3);
 	var PageSize = __webpack_require__(4);
 	var Pagination = __webpack_require__(5);
 	var SearchField = __webpack_require__(6);
+	var Table = __webpack_require__(2);
 
 	var DataMixin = __webpack_require__(7);
 
@@ -92,24 +94,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	          React.createElement("div", {className: "col-xs-8"}, 
 
 	            React.createElement("div", {className: "btn-toolbar", role: "toolbar", "aria-label": "..."}, 
-
-	              React.createElement("div", {className: "btn-group"}, 
-	                React.createElement("button", {type: "button", className: "btn btn-default"}, "Configure"), 
-	                React.createElement("button", {type: "button", className: "btn btn-default dropdown-toggle", 
-	                  "data-toggle": "dropdown", "aria-expanded": "false"}, 
-	                  React.createElement("span", {className: "caret"}), 
-	                  React.createElement("span", {className: "sr-only"}, "Toggle Dropdown")
-	                ), 
-	                React.createElement("ul", {className: "dropdown-menu", role: "menu"}, 
-
-	                  React.createElement("li", null, React.createElement("a", {href: "#"}, "Columns 1")), 
-	                  React.createElement("li", null, React.createElement("a", {href: "#"}, "Columns 2")), 
-	                  React.createElement("li", null, React.createElement("a", {href: "#"}, "Columns 3")), 
-
-	                  React.createElement("li", {className: "divider"}), 
-	                  React.createElement("li", null, React.createElement("a", {href: "#"}, "Configure"))
-	                )
+	              React.createElement(ConfigureTable, {
+	                columns: this.props.columns, 
+	                columnsPossible: this.props.columnsPossible, 
+	                configGroup: this.props.configGroup}
 	              ), 
+
 	              React.createElement("div", {className: "btn-group"}, 
 	                React.createElement("button", {type: "button", className: "btn btn-default"}, "Export")
 	              )
@@ -362,7 +352,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var React = __webpack_require__(9);
-	var numeral = __webpack_require__(10);
+	var numeral = __webpack_require__(11);
 
 	function prettyInt(num) {
 	  return numeral(num).format('0,0');
@@ -372,7 +362,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  Object.defineProperty(PageItems.prototype,"render",{writable:true,configurable:true,value:function() {
 	    var $__0=    this.props,dataSize=$__0.dataSize,startIndex=$__0.startIndex,endIndex=$__0.endIndex;
-	    var start = startIndex + 1;
+	    var start = dataSize ? startIndex + 1 : 0;
 
 	    return (
 	      React.createElement("div", {className: "ns-inline-block pull-left ns-page-items"}, 
@@ -807,6 +797,77 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(9);
+
+	function ConfigureTable(){}
+
+	  Object.defineProperty(ConfigureTable.prototype,"render",{writable:true,configurable:true,value:function() {
+	    var $__0=    this.props,columns=$__0.columns,columnsPossible=$__0.columnsPossible,configGroup=$__0.configGroup;
+	    var primaryTitle = columns.length ? columns[0].title : '';
+
+	    var isActive = function(title)  {
+	      return title === primaryTitle ? 'active' : '';
+	    };
+
+	    var shortCutColumns = columnsPossible.map(function(col)  {
+	      return col.group === configGroup ? col : null;
+	    }).filter(function(col)  { return col; });
+
+	    var shortCutConfigs = shortCutColumns.map(function(col)  {
+	      return (React.createElement("li", {className: isActive(col.title)}, React.createElement("a", {href: "#"}, col.title)));
+	    });
+
+	    return (
+	      React.createElement("div", {className: "configure-table-wrapper"}, 
+	        React.createElement("div", {className: "btn-group"}, 
+	          React.createElement("button", {type: "button", className: "btn btn-default", "data-toggle": "modal", "data-target": "#configure-table-modal"}, "Configure"), 
+
+	          React.createElement("button", {type: "button", className: "btn btn-default dropdown-toggle", 
+	            "data-toggle": "dropdown", "aria-expanded": "false"}, 
+	            React.createElement("span", {className: "caret"}), 
+	            React.createElement("span", {className: "sr-only"}, "Toggle Dropdown")
+	          ), 
+	          React.createElement("ul", {className: "dropdown-menu", role: "menu"}, 
+	            shortCutConfigs, 
+	            React.createElement("li", {className: "divider"}), 
+	            React.createElement("li", {"data-toggle": "modal", "data-target": "#configure-table-modal"}, React.createElement("a", {href: "#"}, "Configure"))
+	          )
+	        ), 
+	        React.createElement("div", {className: "modal fade", id: "configure-table-modal", tabindex: "-1", role: "dialog", "aria-labelledby": "Configure Table", "aria-hidden": "true"}, 
+	          React.createElement("div", {className: "modal-dialog"}, 
+	            React.createElement("div", {className: "modal-content"}, 
+	              React.createElement("div", {className: "modal-header"}, 
+	                React.createElement("button", {className: "close", type: "button", "data-dismiss": "modal", 
+	                  "aria-label": "Close"}, 
+	                  React.createElement("span", {"aria-hidden": "true"}, "×")
+	                ), 
+	                React.createElement("h4", {className: "modal-title", id: "configure-table-modal-title"}, "Configure Table")
+	              ), 
+	              React.createElement("div", {className: "modal-body"}, 
+	                "HELLO WORLD"
+	              ), 
+	              React.createElement("div", {className: "modal-footer"}, 
+	                React.createElement("button", {className: "btn btn-default", type: "button", "data-dismiss": "modal"}, "Cancel"), 
+	                React.createElement("button", {className: "btn btn-primary"}, "Save changes")
+	              )
+	            )
+	          )
+	        )
+	      )
+	    );
+	  }});
+
+
+
+	module.exports = ConfigureTable;
+
+
+/***/ },
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
