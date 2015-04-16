@@ -38,7 +38,7 @@ class ConfigureTable {
             <li data-toggle="modal" data-target="#configure-table-modal"><a href="#">Configure</a></li>
           </ul>
         </div>
-        <div className="modal fade" id="configure-table-modal" tabindex="-1" role="dialog" aria-labelledby="Configure Table" aria-hidden="true">
+        <div className="modal fade" id="configure-table-modal" tabIndex="-1" role="dialog" aria-labelledby="Configure Table" aria-hidden="true">
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
