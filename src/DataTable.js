@@ -70,6 +70,7 @@ var DataTable = React.createClass({
                   id="page-size"
                   className="page-size pull-left"
                   label="Show:"
+                  dataSize={page.dataSize}
                   value={this.state.pageSize}
                   max={this.props.pageSizeMax}
                   options={this.props.pageSizeOptions}

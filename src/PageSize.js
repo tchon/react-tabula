@@ -14,7 +14,12 @@ class PageSize {
 
   render() {
     var self = this;
-    var {options, value} = this.props;
+    var {options, value, dataSize} = this.props;
+
+    if (!dataSize) {
+      return null;
+    }
+
     var isActive = (size) => size === value ? "active" : "";
     var mappedOpts =
       options.map(

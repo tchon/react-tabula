@@ -13,6 +13,10 @@ class PageItems {
     var {dataSize, startIndex, endIndex} = this.props;
     var start = dataSize ? startIndex + 1 : 0;
 
+    if (!dataSize) {
+      return null;
+    }
+
     return (
       <div className="ns-inline-block pull-left ns-page-items">
         Items {prettyInt(start)} &ndash; {prettyInt(endIndex)} of {prettyInt(dataSize)}

@@ -113,11 +113,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          React.createElement("div", {className: "modal-dialog"}, 
 	            React.createElement("div", {className: "modal-content"}, 
 	              React.createElement("div", {className: "modal-header"}, 
-	                React.createElement("button", {className: "close", type: "button", "data-dismiss": "modal", 
-	                  "aria-label": "Close"}, 
-	                  React.createElement("span", {"aria-hidden": "true"}, "×")
-	                ), 
-	                React.createElement("h4", {className: "modal-title", id: "configure-table-modal-title"}, "Configure Table")
+	                React.createElement("h4", {className: "modal-title", id: "configure-table-modal-title"}, "Configure")
 	              ), 
 	              React.createElement("div", {className: "modal-body"}, 
 	                "NOTE: Configure Table Tree Optoins Go Here."
@@ -336,6 +332,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                  id: "page-size", 
 	                  className: "page-size pull-left", 
 	                  label: "Show:", 
+	                  dataSize: page.dataSize, 
 	                  value: this.state.pageSize, 
 	                  max: this.props.pageSizeMax, 
 	                  options: this.props.pageSizeOptions, 
@@ -382,6 +379,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var $__0=    this.props,dataSize=$__0.dataSize,startIndex=$__0.startIndex,endIndex=$__0.endIndex;
 	    var start = dataSize ? startIndex + 1 : 0;
 
+	    if (!dataSize) {
+	      return null;
+	    }
+
 	    return (
 	      React.createElement("div", {className: "ns-inline-block pull-left ns-page-items"}, 
 	        "Items ", prettyInt(start), " – ", prettyInt(endIndex), " of ", prettyInt(dataSize), 
@@ -415,7 +416,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  Object.defineProperty(PageSize.prototype,"render",{writable:true,configurable:true,value:function() {
 	    var self = this;
-	    var $__0=   this.props,options=$__0.options,value=$__0.value;
+	    var $__0=    this.props,options=$__0.options,value=$__0.value,dataSize=$__0.dataSize;
+
+	    if (!dataSize) {
+	      return null;
+	    }
+
 	    var isActive = function(size)  {return size === value ? "active" : "";};
 	    var mappedOpts =
 	      options.map(
