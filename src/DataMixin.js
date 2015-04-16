@@ -23,7 +23,11 @@ module.exports = {
 
   getDefaultProps() {
     return {
+      columns: [],
+      columnsPossible: [],
+      configGroup: '',
       initialPageSize: 5,
+      keys: [],
       pageSizeMax: 20,
       pageSizeOptions: [ 5, 10, 20 ],
       filters: {

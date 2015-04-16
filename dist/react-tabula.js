@@ -83,7 +83,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return title === primaryTitle ? 'active' : '';
 	    };
 
-	    var shortCutColumns = columnsPossible.map(function(col)  {
+	    var possible = columnsPossible && columnsPossible.length ?
+	      columnsPossible : columns;
+	    var shortCutColumns = possible.map(function(col)  {
 	      return col.group === configGroup ? col : null;
 	    }).filter(function(col)  { return col; });
 
@@ -118,7 +120,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                React.createElement("h4", {className: "modal-title", id: "configure-table-modal-title"}, "Configure Table")
 	              ), 
 	              React.createElement("div", {className: "modal-body"}, 
-	                "HELLO WORLD"
+	                "NOTE: Configure Table Tree Optoins Go Here."
 	              ), 
 	              React.createElement("div", {className: "modal-footer"}, 
 	                React.createElement("button", {className: "btn btn-default", type: "button", "data-dismiss": "modal"}, "Cancel"), 
@@ -165,7 +167,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  getDefaultProps:function() {
 	    return {
+	      columns: [],
+	      columnsPossible: [],
+	      configGroup: '',
 	      initialPageSize: 5,
+	      keys: [],
 	      pageSizeMax: 20,
 	      pageSizeOptions: [ 5, 10, 20 ],
 	      filters: {

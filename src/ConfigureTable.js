@@ -12,7 +12,9 @@ class ConfigureTable {
       return title === primaryTitle ? 'active' : '';
     };
 
-    var shortCutColumns = columnsPossible.map((col) => {
+    var possible = columnsPossible && columnsPossible.length ?
+      columnsPossible : columns;
+    var shortCutColumns = possible.map((col) => {
       return col.group === configGroup ? col : null;
     }).filter((col) => { return col; });
 
@@ -47,7 +49,7 @@ class ConfigureTable {
                 <h4 className="modal-title" id="configure-table-modal-title">Configure Table</h4>
               </div>
               <div className="modal-body">
-                HELLO WORLD
+                NOTE: Configure Table Tree Optoins Go Here.
               </div>
               <div className="modal-footer">
                 <button className="btn btn-default" type="button" data-dismiss="modal">Cancel</button>
