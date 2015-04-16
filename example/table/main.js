@@ -41,6 +41,7 @@ function buildTable(data) {
       initialPageSize={15}
       initialSortBy={{ prop: 'PHYLUM', order: 'ascending' }}
       configGroup='A'
+      configPrimary='Phylum'
       pageSizeOptions={[ 5, 15, 50, 100 ]}
       pageSizeMax={100}
     />

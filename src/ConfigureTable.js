@@ -3,13 +3,21 @@
 var React = require('react');
 
 class ConfigureTable {
+  constructor() {
+    this.onChangeQuickConfig = this.onChangeQuickConfig.bind(this);
+  }
+
+  onChangeQuickConfig(e) {
+    e.preventDefault();
+    var title = e.target.textContent;
+    this.props.onChangeQuickConfig(title);
+  }
 
   render() {
-    var {columns, columnsPossible, configGroup} = this.props;
-    var primaryTitle = columns.length ? columns[0].title : '';
+    var {columns, columnsPossible, configGroup, configPrimary} = this.props;
 
     var isActive = (title) => {
-      return title === primaryTitle ? 'active' : '';
+      return title === configPrimary ? 'active' : '';
     };
 
     var possible = columnsPossible && columnsPossible.length ?
@@ -19,7 +27,11 @@ class ConfigureTable {
     }).filter((col) => { return col; });
 
     var shortCutConfigs = shortCutColumns.map((col) => {
-      return (<li className={isActive(col.title)}><a href="#">{col.title}</a></li>);
+      return (
+        <li className={col.title === configPrimary ? 'active':''} onClick={this.onChangeQuickConfig}>
+          <a href="#">{col.title}</a>
+        </li>
+      );
     });
 
     return (

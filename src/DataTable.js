@@ -28,6 +28,8 @@ var DataTable = React.createClass({
                 columns={this.props.columns}
                 columnsPossible={this.props.columnsPossible}
                 configGroup={this.props.configGroup}
+                configPrimary={this.props.configPrimary}
+                onChangeQuickConfig={this.onChangeQuickConfig}
               />
 
               <div className="btn-group">
