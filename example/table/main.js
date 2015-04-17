@@ -37,6 +37,8 @@ function buildTable(data) {
       keys={columnKeys}
       columns={columns}
       columnsPossible={columnsPossible}
+      enableConfig={true}
+      enableExport={false}
       initialData={data}
       initialPageSize={15}
       initialSortBy={{ prop: 'PHYLUM', order: 'ascending' }}

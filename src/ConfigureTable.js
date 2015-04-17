@@ -14,6 +14,10 @@ class ConfigureTable {
   }
 
   render() {
+    if (!this.props.enabled) {
+      return null;
+    }
+
     var {columns, columnsPossible, configGroup, configPrimary} = this.props;
 
     var isActive = (title) => {

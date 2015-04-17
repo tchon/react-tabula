@@ -3,6 +3,7 @@
 var React = require('react');
 
 var ConfigureTable = require('./ConfigureTable');
+var ExportButton = require('./ExportButton');
 var PageItems = require('./PageItems');
 var PageSize = require('./PageSize');
 var Pagination = require('./Pagination');
@@ -18,6 +19,8 @@ var DataTable = React.createClass({
   render() {
     var page = this.buildPage();
 
+    console.log('>> this.props.enableConfig', this.props.enableConfig);
+
     return (
       <div className={this.props.className}>
         <div className="row">
@@ -29,12 +32,11 @@ var DataTable = React.createClass({
                 columnsPossible={this.props.columnsPossible}
                 configGroup={this.props.configGroup}
                 configPrimary={this.props.configPrimary}
+                enabled={this.props.enableConfig}
                 onChangeQuickConfig={this.onChangeQuickConfig}
               />
+              <ExportButton enabled={this.props.enableExport} />
 
-              <div className="btn-group">
-                <button type="button" className="btn btn-default">Export</button>
-              </div>
             </div>
 
           </div>

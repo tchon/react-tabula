@@ -7,7 +7,7 @@
 		exports["ReactTabula"] = factory(require("react"));
 	else
 		root["ReactTabula"] = factory(root["React"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_10__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_11__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -55,14 +55,15 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	exports.ConfigureTable = __webpack_require__(1);
-	exports.DataMixin = __webpack_require__(2);
-	exports.DataTable = __webpack_require__(3);
-	exports.PageItems = __webpack_require__(4);
-	exports.PageSize = __webpack_require__(5);
-	exports.Pagination = __webpack_require__(6);
-	exports.SearchField = __webpack_require__(7);
-	exports.Table = __webpack_require__(8);
-	exports.utils = __webpack_require__(9);
+	exports.ExportButton = __webpack_require__(2);
+	exports.DataMixin = __webpack_require__(3);
+	exports.DataTable = __webpack_require__(4);
+	exports.PageItems = __webpack_require__(5);
+	exports.PageSize = __webpack_require__(6);
+	exports.Pagination = __webpack_require__(7);
+	exports.SearchField = __webpack_require__(8);
+	exports.Table = __webpack_require__(9);
+	exports.utils = __webpack_require__(10);
 
 
 /***/ },
@@ -71,7 +72,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var React = __webpack_require__(10);
+	var React = __webpack_require__(11);
 
 
 	  function ConfigureTable() {
@@ -85,6 +86,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }});
 
 	  Object.defineProperty(ConfigureTable.prototype,"render",{writable:true,configurable:true,value:function() {
+	    if (!this.props.enabled) {
+	      return null;
+	    }
+
 	    var $__0=     this.props,columns=$__0.columns,columnsPossible=$__0.columnsPossible,configGroup=$__0.configGroup,configPrimary=$__0.configPrimary;
 
 	    var isActive = function(title)  {
@@ -152,7 +157,35 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var $__0=     __webpack_require__(9),sort=$__0.sort,filter=$__0.filter;
+	var React = __webpack_require__(11);
+
+	function ExportButton(){}
+
+	  Object.defineProperty(ExportButton.prototype,"render",{writable:true,configurable:true,value:function() {
+	    console.log('>> this.props.enabled', this.props.enabledh);
+	    if (!this.props.enabled) {
+	      return null;
+	    }
+
+	    return (
+	      React.createElement("div", {className: "btn-group"}, 
+	        React.createElement("button", {type: "button", className: "btn btn-default"}, "Export")
+	      )
+	    );
+	  }});
+
+
+
+	module.exports = ExportButton;
+
+
+/***/ },
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var $__0=     __webpack_require__(10),sort=$__0.sort,filter=$__0.filter;
 
 	var containsIgnoreCase = function(a, b) {
 	  a = (a + '').toLowerCase().trim();
@@ -178,6 +211,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      columns: [],
 	      columnsPossible: [],
 	      configGroup: '',
+	      enableConfig: false,
+	      enableExport: false,
 	      initialPageSize: 5,
 	      keys: [],
 	      pageSizeMax: 20,
@@ -277,21 +312,22 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 3 */
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var React = __webpack_require__(10);
+	var React = __webpack_require__(11);
 
 	var ConfigureTable = __webpack_require__(1);
-	var PageItems = __webpack_require__(4);
-	var PageSize = __webpack_require__(5);
-	var Pagination = __webpack_require__(6);
-	var SearchField = __webpack_require__(7);
-	var Table = __webpack_require__(8);
+	var ExportButton = __webpack_require__(2);
+	var PageItems = __webpack_require__(5);
+	var PageSize = __webpack_require__(6);
+	var Pagination = __webpack_require__(7);
+	var SearchField = __webpack_require__(8);
+	var Table = __webpack_require__(9);
 
-	var DataMixin = __webpack_require__(2);
+	var DataMixin = __webpack_require__(3);
 
 	var DataTable = React.createClass({displayName: "DataTable",
 
@@ -299,6 +335,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  render:function() {
 	    var page = this.buildPage();
+
+	    console.log('>> this.props.enableConfig', this.props.enableConfig);
 
 	    return (
 	      React.createElement("div", {className: this.props.className}, 
@@ -311,12 +349,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	                columnsPossible: this.props.columnsPossible, 
 	                configGroup: this.props.configGroup, 
 	                configPrimary: this.props.configPrimary, 
+	                enabled: this.props.enableConfig, 
 	                onChangeQuickConfig: this.onChangeQuickConfig}
 	              ), 
+	              React.createElement(ExportButton, {enabled: this.props.enableExport})
 
-	              React.createElement("div", {className: "btn-group"}, 
-	                React.createElement("button", {type: "button", className: "btn btn-default"}, "Export")
-	              )
 	            )
 
 	          ), 
@@ -383,13 +420,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 4 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var React = __webpack_require__(10);
-	var numeral = __webpack_require__(11);
+	var React = __webpack_require__(11);
+	var numeral = __webpack_require__(12);
 
 	function prettyInt(num) {
 	  return numeral(num).format('0,0');
@@ -419,12 +456,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var React = __webpack_require__(10);
+	var React = __webpack_require__(11);
 
 
 
@@ -473,12 +510,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var React = __webpack_require__(10);
+	var React = __webpack_require__(11);
 	var $__0=    React,PropTypes=$__0.PropTypes;
 
 	// Used to cancel events.
@@ -594,12 +631,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var React = __webpack_require__(10);
+	var React = __webpack_require__(11);
 
 
 
@@ -636,12 +673,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var React = __webpack_require__(10);
+	var React = __webpack_require__(11);
 	var $__0=    React,PropTypes=$__0.PropTypes;
 
 	var simpleGet = function(key)  {return function(data)  {return data[key];};};
@@ -814,7 +851,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -896,13 +933,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __WEBPACK_EXTERNAL_MODULE_10__;
+	module.exports = __WEBPACK_EXTERNAL_MODULE_11__;
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
