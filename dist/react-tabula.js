@@ -73,14 +73,22 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React = __webpack_require__(10);
 
-	function ConfigureTable(){}
+
+	  function ConfigureTable() {
+	    this.onChangeQuickConfig = this.onChangeQuickConfig.bind(this);
+	  }
+
+	  Object.defineProperty(ConfigureTable.prototype,"onChangeQuickConfig",{writable:true,configurable:true,value:function(e) {
+	    e.preventDefault();
+	    var title = e.target.textContent;
+	    this.props.onChangeQuickConfig(title);
+	  }});
 
 	  Object.defineProperty(ConfigureTable.prototype,"render",{writable:true,configurable:true,value:function() {
-	    var $__0=    this.props,columns=$__0.columns,columnsPossible=$__0.columnsPossible,configGroup=$__0.configGroup;
-	    var primaryTitle = columns.length ? columns[0].title : '';
+	    var $__0=     this.props,columns=$__0.columns,columnsPossible=$__0.columnsPossible,configGroup=$__0.configGroup,configPrimary=$__0.configPrimary;
 
 	    var isActive = function(title)  {
-	      return title === primaryTitle ? 'active' : '';
+	      return title === configPrimary ? 'active' : '';
 	    };
 
 	    var possible = columnsPossible && columnsPossible.length ?
@@ -90,8 +98,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }).filter(function(col)  { return col; });
 
 	    var shortCutConfigs = shortCutColumns.map(function(col)  {
-	      return (React.createElement("li", {className: isActive(col.title)}, React.createElement("a", {href: "#"}, col.title)));
-	    });
+	      return (
+	        React.createElement("li", {className: col.title === configPrimary ? 'active':'', onClick: this.onChangeQuickConfig}, 
+	          React.createElement("a", {href: "#"}, col.title)
+	        )
+	      );
+	    }.bind(this));
 
 	    return (
 	      React.createElement("div", {className: "configure-table-wrapper"}, 
@@ -225,6 +237,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	  },
 
+	  onChangeQuickConfig:function(title) {
+	    //console.log('>> selected item', title);
+	    //this.setState({ configPrimary: title });
+	    //console.log('>> BEFORE configPrimary', this.props.configPrimary);
+	    //this.props.configPrimary = title;
+	    //console.log('>> AFTER configPrimary', this.props.configPrimary);
+	  },
+
 	  onChangePage:function(pageNumber) {
 	    var pageSize = this.state.pageSize;
 	    var start = pageSize * pageNumber;
@@ -289,7 +309,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	              React.createElement(ConfigureTable, {
 	                columns: this.props.columns, 
 	                columnsPossible: this.props.columnsPossible, 
-	                configGroup: this.props.configGroup}
+	                configGroup: this.props.configGroup, 
+	                configPrimary: this.props.configPrimary, 
+	                onChangeQuickConfig: this.onChangeQuickConfig}
 	              ), 
 
 	              React.createElement("div", {className: "btn-group"}, 
