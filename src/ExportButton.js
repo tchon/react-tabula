@@ -5,7 +5,6 @@ var React = require('react');
 class ExportButton {
 
   render() {
-    console.log('>> this.props.enabled', this.props.enabledh);
     if (!this.props.enabled) {
       return null;
     }

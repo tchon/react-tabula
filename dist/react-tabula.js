@@ -162,7 +162,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	function ExportButton(){}
 
 	  Object.defineProperty(ExportButton.prototype,"render",{writable:true,configurable:true,value:function() {
-	    console.log('>> this.props.enabled', this.props.enabledh);
 	    if (!this.props.enabled) {
 	      return null;
 	    }
@@ -335,8 +334,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  render:function() {
 	    var page = this.buildPage();
-
-	    console.log('>> this.props.enableConfig', this.props.enableConfig);
 
 	    return (
 	      React.createElement("div", {className: this.props.className}, 

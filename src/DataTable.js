@@ -19,8 +19,6 @@ var DataTable = React.createClass({
   render() {
     var page = this.buildPage();
 
-    console.log('>> this.props.enableConfig', this.props.enableConfig);
-
     return (
       <div className={this.props.className}>
         <div className="row">
