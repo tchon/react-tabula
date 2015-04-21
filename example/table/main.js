@@ -2,43 +2,110 @@ require('../../css/table-twbs.css');
 
 var React = require('react');
 var { DataTable } = require('react-tabula');
+var _ = require('lodash');
+
+
+function Taxonomy() {
+  this.phylum = { title: 'Phylum', prop: 'PHYLUM' };
+  this.genus = { title: 'Animal Genus', prop: 'ANIMAL GENUS' };
+  this.animal = { title: 'Animal', prop: 'ANIMAL' };
+
+  this.kingdom = { title: 'Kingdom', prop: 'KINGDOM'};
+  this.order = { title: 'Order', prop: 'ORDER'};
+  this.species = { title: 'Species', prop: 'Species'}
+}
+
+function Behavior() {
+  this.walks = { title: 'No. of Walks', prop: 'WALKS' };
+  this.meals = { title: 'Meals per day', prop: 'EATS' };
+  this.naps = { title: 'Naps per day', prop: 'SLEEPS' };
+
+  this.plays = { title: 'Plays', prop: 'PLAYS'};
+  this.life = { title: 'Life Expectancy', prop: 'LIFE'};
+  this.sex = { title: 'Reproduces', prop: 'REPRODUCE'};
+}
+
 
 function Fixtures() {
-  this.columnGroupA = [
-    { title: 'Phylum', prop: 'PHYLUM', group: 'A' },
-    { title: 'Animal Genus', prop: 'ANIMAL GENUS', group: 'A' },
-    { title: 'Animal', prop: 'ANIMAL', group: 'A' }
-  ];
+  this.initTaxonomy();
+  this.initBehavior();
+  this.initColumns();
+  this.initConfig();
+}
 
-  this.columnGroupB = [
-    { title: 'No. of Walks', prop: 'WALKS', defaultContent: '<none>', group: 'B' },
-    { title: 'Meals per day', prop: 'EATS', defaultContent: '<none>', group: 'B' },
-    { title: 'Naps per day', prop: 'SLEEPS', defaultContent: '<none>', group: 'B' }
-  ]
+Fixtures.prototype.initTaxonomy = function() {
+  this.taxonomy = new Taxonomy();
+  this.taxonomyDefaults = [ 'phylum', 'genus', 'animal' ];
+  this.taxonomyAdditional = [ 'kingdom', 'order', 'species' ];
+  this.taxonomyColumns = this.groupColumns(this.taxonomyDefaults, 'taxonomy');
+  this.taxonomyColumnsAdditional = this.groupColumns(this.taxonomyAdditional, 'taxonomy');
+  this.taxonomyAll = this.taxonomyColumns.concat(this.taxonomyColumnsAdditional);
+};
 
-  this.columns = this.columnGroupA.concat(this.columnGroupB);
-  this.columnKeys = this.columns.map(function(col) { return col.prop; });
+Fixtures.prototype.initBehavior = function() {
+  this.behavior = new Behavior();
+  this.behaviorDefaults = [ 'walks', 'meals', 'naps' ];
+  this.behaviorAdditional = [ 'plays', 'life', 'sex' ];
+  this.behaviorColumns = this.groupColumns(this.behaviorDefaults, 'behavior');
+  this.behaviorColumnsAdditional = this.groupColumns(this.behaviorAdditional, 'behavior');
+  this.behaviorAll = this.behaviorColumns.concat(this.behaviorColumnsAdditional);
+};
 
-  this.columnPossibleGroupA = this.columnGroupA.slice(0, this.columnGroupA.length);
-  this.columnPossibleGroupB = this.columnGroupB.slice(0, this.columnGroupB.length);
+Fixtures.prototype.initColumns = function() {
+  this.columns = this.taxonomyColumns.concat(this.behaviorColumns);
+  this.columnKeys = this.columns.map(function(c) { return c.prop; });
+  this.columnsPossible = this.taxonomyAll.concat(this.behaviorAll);
+  this.columnsPossibleKeys = this.columnsPossible.map(function(o){ return o.prop; });
+};
 
-  this.columnPossibleGroupA.push({ title: 'Kingdom', prop: 'KINGDOM', group: 'A'});
-  this.columnPossibleGroupA.push({ title: 'Order', prop: 'ORDER', group: 'A'});
-  this.columnPossibleGroupA.push({ title: 'Species', prop: 'Species', group: 'A'});
+Fixtures.prototype.initConfig = function() {
+  this.buildBranch = this.buildBranch.bind(this);
+  // build configuration branches
+  var primaries = _.cloneDeep(this.taxonomyAll).map(this.buildBranch);
 
-  this.columnPossibleGroupB.push({ title: 'Plays', prop: 'PLAYS', group: 'B'});
-  this.columnPossibleGroupB.push({ title: 'Life Expectancy', prop: 'LIFE', group: 'B'});
-  this.columnPossibleGroupB.push({ title: 'Reproduces', prop: 'REPRODUCE', group: 'B'});
+  // configuration tree
+  this.config = { prop: 'root', children: primaries };
+};
 
-  this.columnsPossible = this.columnPossibleGroupA.concat(this.columnPossibleGroupB);
+Fixtures.prototype.buildBranch = function(primary) {
+  var secondaries = _.cloneDeep(this.taxonomyAll);
+  secondaries = secondaries.map(function(second) {
+    return second.prop === primary.prop ? null : second
+  });
 
-  //this.config = {
-  //  prop: 'root',
-  //  children: [
-  //    this.columnGroupA[0]
-  //  ]
-  //};
+  var behaviors = _.cloneDeep(this.behaviorAll);
+  behaviors = behaviors.map(function(behavior) { return behavior; });
 
+  var additionalTaxonomySection = {
+      title: 'Additional categories',
+      prop: 'additional',
+      group: 'section',
+      children: secondaries
+  };
+
+  var additionalBehaviorSection = {
+      title: 'Behaviors',
+      prop: 'behaviors',
+      group: 'section',
+      children: behaviors
+  };
+
+  primary.children = [ additionalTaxonomySection, additionalBehaviorSection ]; 
+  return primary
+};
+
+Fixtures.prototype.group = function(ary, label) {
+  return ary.filter(function(obj){ return obj; }).map(function(obj) {
+    var twin = _.cloneDeep(obj);
+    twin.group = label;
+    return twin;
+  });
+};
+
+Fixtures.prototype.groupColumns = function(keys, attribute) {
+  var ref = this[attribute];
+  var ary = keys.map(function (k) { return ref[k]; });
+  return this.group(ary, attribute);
 }
 
 
