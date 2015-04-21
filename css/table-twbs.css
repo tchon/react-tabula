@@ -75,3 +75,27 @@
   padding-top: 10px;
   padding-bottom: 10px;
 }
+
+.ns-panel-heading, .ns-panel-body {
+  margin-bottom: 0;
+}
+
+.ns-panel-default > .ns-panel-heading {
+  font-weight: bold;
+  background-color: #fff;
+  border: 0;
+  border-color: none;
+  padding-bottom: 1px;
+}
+
+.ns-panel-default, .ns-panel-default .ns-panel-body {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -ms-box-shadow: none;
+  -o-box-shadow: none;
+  box-shadow: none;
+}
+
+.ns-panel-default .ns-panel-body {
+  border: 0;
+}

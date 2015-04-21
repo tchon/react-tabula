@@ -1,4 +1,6 @@
 require('../../css/table-twbs.css');
+require('../../bower_components/bootstrap-vertical-tabs/bootstrap.vertical-tabs.css');
+
 
 var React = require('react');
 var { DataTable } = require('react-tabula');
@@ -64,7 +66,7 @@ Fixtures.prototype.initConfig = function() {
   var primaries = _.cloneDeep(this.taxonomyAll).map(this.buildBranch);
 
   // configuration tree
-  this.config = { prop: 'root', children: primaries };
+  this.config = { title: 'Primary Taxonomy', prop: 'root', children: primaries };
 };
 
 Fixtures.prototype.buildBranch = function(primary) {
@@ -123,8 +125,10 @@ function buildTable(data) {
       initialData={data}
       initialPageSize={15}
       initialSortBy={{ prop: 'PHYLUM', order: 'ascending' }}
-      configGroup='A'
-      configPrimary='Phylum'
+      config={fixtures.config}
+      configGroup={fixtures.columns[0].group}
+      configHeader={"Configure Table"}
+      configPrimary={fixtures.columns[0].title}
       pageSizeOptions={[ 5, 15, 50, 100 ]}
       pageSizeMax={100}
     />

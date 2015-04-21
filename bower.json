@@ -1,0 +1,26 @@
+{
+  "name": "react-tabula",
+  "version": "0.0.1",
+  "homepage": "https://github.com/tchon/react-tabula",
+  "authors": [
+    "Timothy Chon <devchon+github@gmail.com>"
+  ],
+  "description": "A ReactJS table using bootstrap",
+  "main": "src/index.js",
+  "moduleType": [
+    "es6",
+    "globals",
+    "node"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "bootstrap-vertical-tabs": "~1.2.1"
+  }
+}

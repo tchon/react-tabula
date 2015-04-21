@@ -28,9 +28,12 @@ var DataTable = React.createClass({
               <ConfigureTable
                 columns={this.props.columns}
                 columnsPossible={this.props.columnsPossible}
+                config={this.props.config}
                 configGroup={this.props.configGroup}
+                configHeader={this.props.configHeader}
                 configPrimary={this.props.configPrimary}
                 enabled={this.props.enableConfig}
+                onChangeConfig={this.onChangeConfig}
                 onChangeQuickConfig={this.onChangeQuickConfig}
               />
               <ExportButton enabled={this.props.enableExport} />
