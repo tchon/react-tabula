@@ -1,6 +1,7 @@
 'use strict';
 
 var React = require('react');
+var _ = require('lodash');
 
 class ConfigureTable {
   constructor() {
@@ -20,6 +21,10 @@ class ConfigureTable {
     }
 
     var {columns, columnsPossible, configGroup, configPrimary, config} = this.props;
+
+    if (_.isEmpty(config) || _.isEmpty(config.children)) {
+      return null;
+    }
 
     var isActive = (title) => {
       return title === configPrimary ? 'active' : '';
