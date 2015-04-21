@@ -3,40 +3,54 @@ require('../../css/table-twbs.css');
 var React = require('react');
 var { DataTable } = require('react-tabula');
 
-
-function buildTable(data) {
-  var columnGroupA = [
+function Fixtures() {
+  this.columnGroupA = [
     { title: 'Phylum', prop: 'PHYLUM', group: 'A' },
     { title: 'Animal Genus', prop: 'ANIMAL GENUS', group: 'A' },
     { title: 'Animal', prop: 'ANIMAL', group: 'A' }
   ];
-  var columnGroupB = [
+
+  this.columnGroupB = [
     { title: 'No. of Walks', prop: 'WALKS', defaultContent: '<none>', group: 'B' },
     { title: 'Meals per day', prop: 'EATS', defaultContent: '<none>', group: 'B' },
     { title: 'Naps per day', prop: 'SLEEPS', defaultContent: '<none>', group: 'B' }
   ]
-  var columns = columnGroupA.concat(columnGroupB);
-  var columnKeys = columns.map(function(col) { return col.prop; });
 
-  var columnPossibleGroupA = columnGroupA.slice(0, columnGroupA.length);
-  var columnPossibleGroupB = columnGroupB.slice(0, columnGroupB.length);
+  this.columns = this.columnGroupA.concat(this.columnGroupB);
+  this.columnKeys = this.columns.map(function(col) { return col.prop; });
 
-  columnPossibleGroupA.push({ title: 'Kingdom', prop: 'KINGDOM', group: 'A'});
-  columnPossibleGroupA.push({ title: 'Order', prop: 'ORDER', group: 'A'});
-  columnPossibleGroupA.push({ title: 'Species', prop: 'Species', group: 'A'});
+  this.columnPossibleGroupA = this.columnGroupA.slice(0, this.columnGroupA.length);
+  this.columnPossibleGroupB = this.columnGroupB.slice(0, this.columnGroupB.length);
 
-  columnPossibleGroupB.push({ title: 'Plays', prop: 'PLAYS', group: 'B'});
-  columnPossibleGroupB.push({ title: 'Life Expectancy', prop: 'LIFE', group: 'B'});
-  columnPossibleGroupB.push({ title: 'Reproduces', prop: 'REPRODUCE', group: 'B'});
+  this.columnPossibleGroupA.push({ title: 'Kingdom', prop: 'KINGDOM', group: 'A'});
+  this.columnPossibleGroupA.push({ title: 'Order', prop: 'ORDER', group: 'A'});
+  this.columnPossibleGroupA.push({ title: 'Species', prop: 'Species', group: 'A'});
 
-  var columnsPossible = columnPossibleGroupA.concat(columnPossibleGroupB);
+  this.columnPossibleGroupB.push({ title: 'Plays', prop: 'PLAYS', group: 'B'});
+  this.columnPossibleGroupB.push({ title: 'Life Expectancy', prop: 'LIFE', group: 'B'});
+  this.columnPossibleGroupB.push({ title: 'Reproduces', prop: 'REPRODUCE', group: 'B'});
+
+  this.columnsPossible = this.columnPossibleGroupA.concat(this.columnPossibleGroupB);
+
+  //this.config = {
+  //  prop: 'root',
+  //  children: [
+  //    this.columnGroupA[0]
+  //  ]
+  //};
+
+}
+
+
+function buildTable(data) {
+  fixtures = new Fixtures();
 
   return (
     <DataTable
       className="container"
-      keys={columnKeys}
-      columns={columns}
-      columnsPossible={columnsPossible}
+      keys={fixtures.columnKeys}
+      columns={fixtures.columns}
+      columnsPossible={fixtures.columnsPossible}
       enableConfig={true}
       enableExport={false}
       initialData={data}
