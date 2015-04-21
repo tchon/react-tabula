@@ -24,7 +24,7 @@ var DataTable = React.createClass({
         <div className="row">
           <div className="col-xs-8">
 
-            <div className="btn-toolbar" role="toolbar" aria-label="...">
+            <div className="btn-toolbar ns-btn-toolbar" role="toolbar" aria-label="...">
               <ConfigureTable
                 columnsPossible={this.props.columnsPossible}
                 columns={this.props.columns}

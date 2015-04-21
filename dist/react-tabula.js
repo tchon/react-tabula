@@ -528,7 +528,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        React.createElement("div", {className: "row"}, 
 	          React.createElement("div", {className: "col-xs-8"}, 
 
-	            React.createElement("div", {className: "btn-toolbar", role: "toolbar", "aria-label": "..."}, 
+	            React.createElement("div", {className: "btn-toolbar ns-btn-toolbar", role: "toolbar", "aria-label": "..."}, 
 	              React.createElement(ConfigureTable, {
 	                columnsPossible: this.props.columnsPossible, 
 	                columns: this.props.columns, 
