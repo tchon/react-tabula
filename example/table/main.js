@@ -49,6 +49,9 @@ Fixtures.prototype.initBehavior = function() {
   this.behaviorDefaults = [ 'walks', 'meals', 'naps' ];
   this.behaviorAdditional = [ 'plays', 'life', 'sex' ];
   this.behaviorColumns = this.groupColumns(this.behaviorDefaults, 'behavior');
+  // select defaults to be checked
+  this.behaviorColumns.forEach(function(obj) { obj.selected = true; return obj; });
+
   this.behaviorColumnsAdditional = this.groupColumns(this.behaviorAdditional, 'behavior');
   this.behaviorAll = this.behaviorColumns.concat(this.behaviorColumnsAdditional);
 };

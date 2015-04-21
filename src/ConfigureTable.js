@@ -7,6 +7,7 @@ class ConfigureTable {
   constructor() {
     //this.onChangeConfig = this.onChangeConfig.bind(this);
     this.onChangeQuickConfig = this.onChangeQuickConfig.bind(this);
+    this.onChangeConfigLeaf = this.onChangeConfigLeaf.bind(this);
   }
 
   onChangeQuickConfig(e) {
@@ -14,6 +15,25 @@ class ConfigureTable {
     var title = e.target.textContent;
     this.props.onChangeQuickConfig(title);
   }
+
+  onChangeConfigLeaf(e) {
+    if (!e || !e.currentTarget) {
+      return;
+    }
+    e.stopPropagation();
+    e.preventDefault();
+
+    var current = e.currentTarget;
+    if (current.firstChild.firstChild.disabled) {
+      return;
+    }
+
+    var parentProp = current.dataset.parent;
+    var sectionProp = current.dataset.section;
+    var leafProp = current.dataset.leaf;
+
+    this.props.onChangeConfigLeaf(current, parentProp, sectionProp, leafProp);
+  };
 
   render() {
     if (!this.props.enabled) {
@@ -37,6 +57,9 @@ class ConfigureTable {
     var toKey = (key) => { return key.toLowerCase().replace(' ', '_'); };
     var toId = (key) => { return "#" + toKey(key); };
     var isChecked = (obj) => { return obj.selected ? "checked" : ""; };
+    var isDisabled = (obj) => { return obj.disabled ? "disabled" : ""; };
+
+    var makeRef = (conf, sect, leaf) => { return [conf.prop, sect.prop, leaf.prop].join(':'); }
 
     var possible = columnsPossible && columnsPossible.length ?
       columnsPossible : columns;
@@ -62,15 +85,24 @@ class ConfigureTable {
       );
     });
 
+    var onChangeConfigLeaf = this.onChangeConfigLeaf;
     var tabPanes = config.children.map((conf) => {
 
       var sectChildren = [];
       conf.children.map((sect) => {
         var leaves = sect.children.filter((o) => { return o; }).map((leaf) => {
           return (
-            <div className="checkbox">
+            <div className="checkbox"
+              data-parent={conf.prop}
+              data-section={sect.prop}
+              data-leaf={leaf.prop}
+              data-ref={makeRef(conf, sect, leaf)}
+              ref={makeRef(conf, sect, leaf)}
+              onClick={onChangeConfigLeaf}>
               <label>
-                <input type="checkbox" />{leaf.title}
+                <input type="checkbox"
+                  checked={isChecked(leaf)}
+                  disabled={isDisabled(leaf)}/>{leaf.title}
               </label>
             </div>
           );
@@ -78,13 +110,13 @@ class ConfigureTable {
         sectChildren.push(leaves);
       });
 
-      var i = 0;
+      var counter = 0;
       var sections = conf.children.map((sect) => {
         return (
           <div className="panel panel-default ns-panel-default">
             <div className="panel panel-heading ns-panel-heading">{sect.title}</div>
             <div className="panel panel-body ns-panel-body">
-              {sectChildren[i++]}
+              {sectChildren[counter++]}
             </div>
           </div>
         )

@@ -79,6 +79,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  function ConfigureTable() {
 	    //this.onChangeConfig = this.onChangeConfig.bind(this);
 	    this.onChangeQuickConfig = this.onChangeQuickConfig.bind(this);
+	    this.onChangeConfigLeaf = this.onChangeConfigLeaf.bind(this);
 	  }
 
 	  Object.defineProperty(ConfigureTable.prototype,"onChangeQuickConfig",{writable:true,configurable:true,value:function(e) {
@@ -86,6 +87,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var title = e.target.textContent;
 	    this.props.onChangeQuickConfig(title);
 	  }});
+
+	  Object.defineProperty(ConfigureTable.prototype,"onChangeConfigLeaf",{writable:true,configurable:true,value:function(e) {
+	    if (!e || !e.currentTarget) {
+	      return;
+	    }
+	    e.stopPropagation();
+	    e.preventDefault();
+
+	    var current = e.currentTarget;
+	    if (current.firstChild.firstChild.disabled) {
+	      return;
+	    }
+
+	    var parentProp = current.dataset.parent;
+	    var sectionProp = current.dataset.section;
+	    var leafProp = current.dataset.leaf;
+
+	    this.props.onChangeConfigLeaf(current, parentProp, sectionProp, leafProp);
+	  }});;
 
 	  Object.defineProperty(ConfigureTable.prototype,"render",{writable:true,configurable:true,value:function() {
 	    if (!this.props.enabled) {
@@ -109,6 +129,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var toKey = function(key)  { return key.toLowerCase().replace(' ', '_'); };
 	    var toId = function(key)  { return "#" + toKey(key); };
 	    var isChecked = function(obj)  { return obj.selected ? "checked" : ""; };
+	    var isDisabled = function(obj)  { return obj.disabled ? "disabled" : ""; };
+
+	    var makeRef = function(conf, sect, leaf)  { return [conf.prop, sect.prop, leaf.prop].join(':'); }
 
 	    var possible = columnsPossible && columnsPossible.length ?
 	      columnsPossible : columns;
@@ -134,15 +157,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	      );
 	    });
 
+	    var onChangeConfigLeaf = this.onChangeConfigLeaf;
 	    var tabPanes = config.children.map(function(conf)  {
 
 	      var sectChildren = [];
 	      conf.children.map(function(sect)  {
 	        var leaves = sect.children.filter(function(o)  { return o; }).map(function(leaf)  {
 	          return (
-	            React.createElement("div", {className: "checkbox"}, 
+	            React.createElement("div", {className: "checkbox", 
+	              "data-parent": conf.prop, 
+	              "data-section": sect.prop, 
+	              "data-leaf": leaf.prop, 
+	              "data-ref": makeRef(conf, sect, leaf), 
+	              ref: makeRef(conf, sect, leaf), 
+	              onClick: onChangeConfigLeaf}, 
 	              React.createElement("label", null, 
-	                React.createElement("input", {type: "checkbox"}), leaf.title
+	                React.createElement("input", {type: "checkbox", 
+	                  checked: isChecked(leaf), 
+	                  disabled: isDisabled(leaf)}), leaf.title
 	              )
 	            )
 	          );
@@ -150,13 +182,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        sectChildren.push(leaves);
 	      });
 
-	      var i = 0;
+	      var counter = 0;
 	      var sections = conf.children.map(function(sect)  {
 	        return (
 	          React.createElement("div", {className: "panel panel-default ns-panel-default"}, 
 	            React.createElement("div", {className: "panel panel-heading ns-panel-heading"}, sect.title), 
 	            React.createElement("div", {className: "panel panel-body ns-panel-body"}, 
-	              sectChildren[i++]
+	              sectChildren[counter++]
 	            )
 	          )
 	        )
@@ -199,6 +231,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	                React.createElement("div", {className: "row"}, 
 	                  React.createElement("div", {className: "col-xs-3"}, 
 	                    React.createElement("ul", {className: "nav nav-tabs tabs-left"}, 
+	                      React.createElement("li", null, 
+	                        React.createElement("h5", {className: "ns-primary-header"}, config.title)
+	                       ), 
 	                      tabHeaders
 	                    )
 	                  ), 
@@ -264,12 +299,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var $__0=     __webpack_require__(10),sort=$__0.sort,filter=$__0.filter;
+	var React = __webpack_require__(11);
+	var _ = __webpack_require__(12);
 
 	var containsIgnoreCase = function(a, b) {
 	  a = (a + '').toLowerCase().trim();
 	  b = (b + '').toLowerCase().trim();
 	  return b.indexOf(a) >= 0;
 	};
+
+
+	var objectExists = function(obj)  { return obj; }
+
 
 	module.exports = {
 
@@ -281,6 +322,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      filterValues: {},
 	      currentPage: 0,
 	      pageSize: this.props.initialPageSize,
+	      config: this.props.config,
 	      configPrimary: ''
 	    };
 	  },
@@ -289,7 +331,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return {
 	      columns: [],
 	      columnsPossible: [],
-	      config: {},
 	      configGroup: '',
 	      configHeader: 'Configure',
 	      enableConfig: false,
@@ -338,7 +379,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  // Pagination
 	  buildPage:function() {
-	    var $__0=    this.state,data=$__0.data,currentPage=$__0.currentPage,pageSize=$__0.pageSize;
+	    var $__0=     this.state,data=$__0.data,currentPage=$__0.currentPage,pageSize=$__0.pageSize,config=$__0.config;
 	    var start = pageSize * currentPage;
 	    var end = start + pageSize;
 	    var endIndex = data.length > end ? end : data.length;
@@ -349,12 +390,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	      currentPage: currentPage,
 	      startIndex: start,
 	      endIndex: endIndex,
-	      totalPages: Math.ceil(data.length / pageSize)
+	      totalPages: Math.ceil(data.length / pageSize),
+	      config: config
 	    };
 	  },
 
 	  onChangeQuickConfig:function(title) {
-	    console.log('>> selected item', title);
+	    //console.log('>> selected item', title);
 
 	    this.props.configPrimary = title;
 
@@ -390,6 +432,61 @@ return /******/ (function(modules) { // webpackBootstrap
 	      startIndex: start,
 	      endIndex: end
 	    });
+	  },
+
+	  onChangeConfigLeaf:function(current, parentProp, sectionProp, leafProp) {
+	    var config = this.state.config;
+	    var branch = config.children.map(function(obj)  {
+	      return obj && obj.prop === parentProp ? obj : null;
+	    }).filter(objectExists);
+
+	    if (_.isEmpty(branch)) { return; }
+
+	    var section = branch[0].children.map(function(obj)  {
+	      return obj && obj.prop === sectionProp ? obj : null;
+	    }).filter(objectExists);
+
+	    if (_.isEmpty(section)) { return; }
+
+	    var leaf = section[0].children.filter(objectExists).map(function(obj)  {
+	      return obj && obj.prop === leafProp ? obj : null;
+	    }).filter(objectExists);
+
+	    if (_.isEmpty(leaf)) {
+	      return;
+	    }
+	    leaf = leaf[0];
+
+	    // selection limit rules
+	    var MAX = leaf.group === this.props.configGroup ? 2 : 5;
+	    var selectedSize = 0;
+	    selectedSize = section[0].children.filter(objectExists).map(function(obj)  {
+	      return obj.selected ? 1 : 0;
+	    }).reduce(function(a, b)  { return a+b; });
+
+	    // dis-allow over-selection
+	    if (selectedSize >= MAX && !leaf.selected) {
+	      return null;
+	    }
+
+	    // toggle "selected" value of leaf
+	    leaf.selected = !leaf.selected;
+
+
+	    if (selectedSize === MAX -1 && leaf.selected) {
+	      // add disable attribute to others
+	      section[0].children.filter(objectExists).forEach(function(obj)  {
+	        obj.disabled = !obj.selected ? true : false;
+	      });
+	    } else {
+	      // remove disable attribute to others
+	      section[0].children.filter(objectExists).forEach(function(obj)  {
+	        obj.disabled = false;
+	      });
+	    }
+
+	    // update config
+	    this.setState({ config: config });
 	  }
 
 	};
@@ -429,12 +526,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	              React.createElement(ConfigureTable, {
 	                columns: this.props.columns, 
 	                columnsPossible: this.props.columnsPossible, 
-	                config: this.props.config, 
+	                config: this.state.config, 
 	                configGroup: this.props.configGroup, 
 	                configHeader: this.props.configHeader, 
 	                configPrimary: this.props.configPrimary, 
 	                enabled: this.props.enableConfig, 
 	                onChangeConfig: this.onChangeConfig, 
+	                onChangeConfigLeaf: this.onChangeConfigLeaf, 
 	                onChangeQuickConfig: this.onChangeQuickConfig}
 	              ), 
 	              React.createElement(ExportButton, {enabled: this.props.enableExport})
