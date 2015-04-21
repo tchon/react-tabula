@@ -177,7 +177,7 @@ class ConfigureTable {
               </div>
 
               <div className="modal-footer">
-                <button className="btn btn-default" type="button" data-dismiss="modal">Cancel</button>
+                <button className="btn btn-default" type="button" data-dismiss="modal" onClick={this.props.onCancelConfig}>Cancel</button>
                 <button className="btn btn-primary">Save changes</button>
               </div>
 

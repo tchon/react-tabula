@@ -26,15 +26,16 @@ var DataTable = React.createClass({
 
             <div className="btn-toolbar" role="toolbar" aria-label="...">
               <ConfigureTable
-                columns={this.props.columns}
                 columnsPossible={this.props.columnsPossible}
-                config={this.state.config}
+                columns={this.props.columns}
                 configGroup={this.props.configGroup}
                 configHeader={this.props.configHeader}
                 configPrimary={this.props.configPrimary}
+                config={this.state.config}
                 enabled={this.props.enableConfig}
-                onChangeConfig={this.onChangeConfig}
+                onCancelConfig={this.onCancelConfig}
                 onChangeConfigLeaf={this.onChangeConfigLeaf}
+                onChangeConfig={this.onChangeConfig}
                 onChangeQuickConfig={this.onChangeQuickConfig}
               />
               <ExportButton enabled={this.props.enableExport} />

@@ -25,6 +25,7 @@ module.exports = {
       currentPage: 0,
       pageSize: this.props.initialPageSize,
       config: this.props.config,
+      configBackup: _.cloneDeep(this.props.config),
       configPrimary: ''
     };
   },
@@ -134,6 +135,11 @@ module.exports = {
       startIndex: start,
       endIndex: end
     });
+  },
+
+  onCancelConfig() {
+    var backup = _.cloneDeep(this.state.configBackup);
+    this.setState({ config: backup });
   },
 
   onChangeConfigLeaf(current, parentProp, sectionProp, leafProp) {
