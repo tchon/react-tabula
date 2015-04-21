@@ -249,7 +249,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	              ), 
 
 	              React.createElement("div", {className: "modal-footer"}, 
-	                React.createElement("button", {className: "btn btn-default", type: "button", "data-dismiss": "modal"}, "Cancel"), 
+	                React.createElement("button", {className: "btn btn-default", type: "button", "data-dismiss": "modal", onClick: this.props.onCancelConfig}, "Cancel"), 
 	                React.createElement("button", {className: "btn btn-primary"}, "Save changes")
 	              )
 
@@ -323,6 +323,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      currentPage: 0,
 	      pageSize: this.props.initialPageSize,
 	      config: this.props.config,
+	      configBackup: _.cloneDeep(this.props.config),
 	      configPrimary: ''
 	    };
 	  },
@@ -434,6 +435,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    });
 	  },
 
+	  onCancelConfig:function() {
+	    var backup = _.cloneDeep(this.state.configBackup);
+	    this.setState({ config: backup });
+	  },
+
 	  onChangeConfigLeaf:function(current, parentProp, sectionProp, leafProp) {
 	    var config = this.state.config;
 	    var branch = config.children.map(function(obj)  {
@@ -524,15 +530,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	            React.createElement("div", {className: "btn-toolbar", role: "toolbar", "aria-label": "..."}, 
 	              React.createElement(ConfigureTable, {
-	                columns: this.props.columns, 
 	                columnsPossible: this.props.columnsPossible, 
-	                config: this.state.config, 
+	                columns: this.props.columns, 
 	                configGroup: this.props.configGroup, 
 	                configHeader: this.props.configHeader, 
 	                configPrimary: this.props.configPrimary, 
+	                config: this.state.config, 
 	                enabled: this.props.enableConfig, 
-	                onChangeConfig: this.onChangeConfig, 
+	                onCancelConfig: this.onCancelConfig, 
 	                onChangeConfigLeaf: this.onChangeConfigLeaf, 
+	                onChangeConfig: this.onChangeConfig, 
 	                onChangeQuickConfig: this.onChangeQuickConfig}
 	              ), 
 	              React.createElement(ExportButton, {enabled: this.props.enableExport})
