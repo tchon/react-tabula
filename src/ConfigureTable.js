@@ -127,6 +127,9 @@ class ConfigureTable {
                 <div className="row">
                   <div className="col-xs-3">
                     <ul className="nav nav-tabs tabs-left">
+                      <li>
+                        <h5 className="ns-primary-header">{config.title}</h5>
+                       </li>
                       {tabHeaders}
                     </ul>
                   </div>

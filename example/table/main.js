@@ -66,7 +66,7 @@ Fixtures.prototype.initConfig = function() {
   var primaries = _.cloneDeep(this.taxonomyAll).map(this.buildBranch);
 
   // configuration tree
-  this.config = { title: 'Primary Taxonomy', prop: 'root', children: primaries };
+  this.config = { title: 'Taxonomy', prop: 'root', children: primaries };
 };
 
 Fixtures.prototype.buildBranch = function(primary) {

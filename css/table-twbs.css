@@ -99,3 +99,9 @@
 .ns-panel-default .ns-panel-body {
   border: 0;
 }
+
+.modal-body .ns-primary-header {
+  font-weight: bold;
+  padding-bottom: 9px;
+  padding-left: 15px;
+}
