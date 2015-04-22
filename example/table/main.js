@@ -116,6 +116,10 @@ Fixtures.prototype.groupColumns = function(keys, attribute) {
 }
 
 
+function configPostCallback(reply) {
+  console.log('>> POST callback - reply:', reply);
+}
+
 function buildTable(data) {
   fixtures = new Fixtures();
 
@@ -135,6 +139,7 @@ function buildTable(data) {
       configHeader={"Configure Table"}
       configPrimary={fixtures.columns[0].title}
       configUrl={'/config'}
+      configPostCallback={configPostCallback}
       pageSizeOptions={[ 5, 15, 50, 100 ]}
       pageSizeMax={100}
     />

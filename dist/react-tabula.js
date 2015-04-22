@@ -332,6 +332,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      configHeader: 'Configure',
 	      configUrl: '',
 	      configBaseRequest: {},
+	      configSuccessCallback: function () {},
+	      configErrorCallback: function () {},
 	      enableConfig: false,
 	      enableExport: false,
 	      initialPageSize: 5,
@@ -437,7 +439,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    $('.modal-footer .alert').text('').hide();
 	  },
 
-	  saveConfig:function(callback) {
+	  saveConfig:function() {
 	    var config = this.state.config;
 	    var baseRequest = _.cloneDeep(this.props.configBaseRequest);
 	    var payload = _.merge(baseRequest, { "configuration": config });
@@ -445,25 +447,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var clearModalAlert = this.clearModalAlert;
 	    var showModalAlert = this.showModalAlert;
 
+	    var postCallback = this.props.configPostCallback;
+
 	    superagent.post(url)
 	      .send(payload)
 	      .set('Accept', 'application/json')
 	      .end(function(err, reply) {
 	        if (reply.ok) {
-	          console.log('>> reply ok', reply);
-
 	          // XXX should we be implicitly be using jquery here?
 	          $('#configure-table-modal').modal('hide');
 	          clearModalAlert();
-
-	          callback('successfully posted configuration');
-
 	        } else {
-	          console.log('>> reply NOT ok', reply);
-
 	          // do not close but show notification in config modal
 	          showModalAlert('cannot save configuration right now');
 	        }
+
+	        postCallback(reply);
 	      });
 	  },
 
@@ -471,10 +470,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    e.preventDefault();
 	    e.stopPropagation();
 
-	    var callback = function(msg){
-	        console.log('>>', msg);
-	    };
-	    this.saveConfig(callback);
+	    this.saveConfig();
 	    return;
 	  },
 
