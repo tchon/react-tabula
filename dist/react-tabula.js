@@ -130,7 +130,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return null;
 	    }
 
-	    var $__0=      this.props,columns=$__0.columns,columnsPossible=$__0.columnsPossible,configGroup=$__0.configGroup,configPrimary=$__0.configPrimary,config=$__0.config;
+	    var $__0=     this.props,columns=$__0.columns,columnsPossible=$__0.columnsPossible,configGroup=$__0.configGroup,config=$__0.config;
+	    var configPrimary = this.props.configPrimary;
 
 	    if (_.isEmpty(config) || _.isEmpty(config.children)) {
 	      return null;
@@ -418,11 +419,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  onChangeQuickConfig:function(title) {
-	    //console.log('>> selected item', title);
+	    var config = this.state.config;
 
-	    this.state.configPrimary = title;
+	    config.children.forEach(function(child)  {
+	      if (_.isEmpty(child)) {
+	        return;
+	      }
 
-	    // TODO update "active" dropdown, POST changes to server, update table
+	      child.selected = child.title === title ? true : false;
+	    });
+
+	    this.props.configPrimary = title;
+	    this.setState({ config: config });
+	    
+	    // TODO POST current active config and reload report query
 	  },
 
 	  onChangeConfig:function(title) {

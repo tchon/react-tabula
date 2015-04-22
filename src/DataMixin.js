@@ -101,11 +101,20 @@ module.exports = {
   },
 
   onChangeQuickConfig(title) {
-    //console.log('>> selected item', title);
+    var config = this.state.config;
 
-    this.state.configPrimary = title;
+    config.children.forEach((child) => {
+      if (_.isEmpty(child)) {
+        return;
+      }
 
-    // TODO update "active" dropdown, POST changes to server, update table
+      child.selected = child.title === title ? true : false;
+    });
+
+    this.props.configPrimary = title;
+    this.setState({ config: config });
+    
+    // TODO POST current active config and reload report query
   },
 
   onChangeConfig(title) {

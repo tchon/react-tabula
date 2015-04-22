@@ -58,7 +58,8 @@ class ConfigureTable {
       return null;
     }
 
-    var {columns, columnsPossible, configGroup, configPrimary, config} = this.props;
+    var {columns, columnsPossible, configGroup, config} = this.props;
+    var configPrimary = this.props.configPrimary;
 
     if (_.isEmpty(config) || _.isEmpty(config.children)) {
       return null;
