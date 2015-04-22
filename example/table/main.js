@@ -132,6 +132,7 @@ function buildTable(data) {
       configGroup={fixtures.columns[0].group}
       configHeader={"Configure Table"}
       configPrimary={fixtures.columns[0].title}
+      configUrl={'/config'}
       pageSizeOptions={[ 5, 15, 50, 100 ]}
       pageSizeMax={100}
     />

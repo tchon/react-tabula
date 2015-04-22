@@ -3,6 +3,7 @@
 var { sort, filter } = require('./utils');
 var React = require('react');
 var _ = require('lodash');
+var superagent = require('superagent');
 
 var containsIgnoreCase = function(a, b) {
   a = (a + '').toLowerCase().trim();
@@ -25,8 +26,7 @@ module.exports = {
       currentPage: 0,
       pageSize: this.props.initialPageSize,
       config: this.props.config,
-      configBackup: _.cloneDeep(this.props.config),
-      configPrimary: ''
+      configBackup: _.cloneDeep(this.props.config)
     };
   },
 
@@ -36,6 +36,8 @@ module.exports = {
       columnsPossible: [],
       configGroup: '',
       configHeader: 'Configure',
+      configPrimary: '',
+      configUrl: '',
       enableConfig: false,
       enableExport: false,
       initialPageSize: 5,
@@ -137,9 +139,24 @@ module.exports = {
     });
   },
 
-  onCancelConfig() {
+  onConfigCancel() {
     var backup = _.cloneDeep(this.state.configBackup);
     this.setState({ config: backup });
+  },
+
+  onConfigSave(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    var config = this.state.config;
+    var url = this.props.configUrl;
+    //console.log('>> attempting to save configuration', config);
+    //superagent.post(url).send(config).end(function(reply) {
+    //  console.log('>> reply', reply);
+    //});
+
+
+    return;
   },
 
   onChangeConfigLeaf(current, parentProp, sectionProp, leafProp) {

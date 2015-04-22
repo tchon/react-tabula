@@ -88,5 +88,8 @@
     "unmockedModulePathPatterns": [
       "../node_modules/react"
     ]
+  },
+  "dependencies": {
+    "superagent": "^1.2.0"
   }
 }

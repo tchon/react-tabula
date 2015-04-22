@@ -28,12 +28,13 @@ var DataTable = React.createClass({
               <ConfigureTable
                 columnsPossible={this.props.columnsPossible}
                 columns={this.props.columns}
+                config={this.state.config}
                 configGroup={this.props.configGroup}
                 configHeader={this.props.configHeader}
                 configPrimary={this.props.configPrimary}
-                config={this.state.config}
                 enabled={this.props.enableConfig}
-                onCancelConfig={this.onCancelConfig}
+                onConfigCancel={this.onConfigCancel}
+                onConfigSave={this.onConfigSave}
                 onChangeConfigLeaf={this.onChangeConfigLeaf}
                 onChangeConfig={this.onChangeConfig}
                 onChangeQuickConfig={this.onChangeQuickConfig}
