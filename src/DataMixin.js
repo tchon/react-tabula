@@ -150,16 +150,18 @@ module.exports = {
 
     var config = this.state.config;
     var url = this.props.configUrl;
-    //console.log('>> attempting to save configuration', config);
-    //superagent.post(url).send(config).end(function(reply) {
-    //  console.log('>> reply', reply);
-    //});
+
+    console.log('>> attempting to save configuration', config);
+
+    superagent.post(url).send(config).end(function(reply) {
+      console.log('>> reply', reply);
+    });
 
 
     return;
   },
 
-  onChangeConfigLeaf(current, parentProp, sectionProp, leafProp) {
+  onChangeConfigLeaf(parentProp, sectionProp, leafProp) {
     var config = this.state.config;
     var branch = config.children.map((obj) => {
       return obj && obj.prop === parentProp ? obj : null;

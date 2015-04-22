@@ -32,7 +32,7 @@ class ConfigureTable {
     var sectionProp = current.dataset.section;
     var leafProp = current.dataset.leaf;
 
-    this.props.onChangeConfigLeaf(current, parentProp, sectionProp, leafProp);
+    this.props.onChangeConfigLeaf(parentProp, sectionProp, leafProp);
   };
 
   render() {
@@ -96,14 +96,10 @@ class ConfigureTable {
               data-parent={conf.prop}
               data-section={sect.prop}
               data-leaf={leaf.prop}
-              data-ref={makeRef(conf, sect, leaf)}
-              ref={makeRef(conf, sect, leaf)}
               onClick={onChangeConfigLeaf}>
-              <label>
-                <input type="checkbox"
-                  checked={isChecked(leaf)}
-                  disabled={isDisabled(leaf)}/>{leaf.title}
-              </label>
+              <label><input type="checkbox"
+                checked={isChecked(leaf)}
+                disabled={isDisabled(leaf)}/>{leaf.title}</label>
             </div>
           );
         });
