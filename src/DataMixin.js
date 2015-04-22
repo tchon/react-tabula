@@ -38,6 +38,7 @@ module.exports = {
       configGroup: '',
       configHeader: 'Configure',
       configUrl: '',
+      configBaseRequest: {},
       enableConfig: false,
       enableExport: false,
       initialPageSize: 5,
@@ -149,8 +150,18 @@ module.exports = {
   },
 
   onConfigCancel() {
+    this.clearModalAlert();
+
     var backup = _.cloneDeep(this.state.configBackup);
     this.setState({ config: backup });
+  },
+
+  showModalAlert(text) {
+    $('.modal-footer .alert').text(text).show();
+  },
+
+  clearModalAlert() {
+    $('.modal-footer .alert').text('').hide();
   },
 
   onConfigSave(e) {
@@ -159,13 +170,27 @@ module.exports = {
 
     var config = this.state.config;
     var url = this.props.configUrl;
+    var clearModalAlert = this.clearModalAlert;
+    var showModalAlert = this.showModalAlert;
 
-    console.log('>> attempting to save configuration', config);
+    superagent.post(url)
+      .send(config)
+      .set('Accept', 'application/json')
+      .end(function(err, reply) {
+        if (reply.ok) {
+          console.log('>> reply ok', reply);
 
-    superagent.post(url).send(config).end(function(reply) {
-      console.log('>> reply', reply);
-    });
+          // XXX should we be implicitly be using jquery here?
+          $('#configure-table-modal').modal('hide');
+          clearModalAlert();
 
+        } else {
+          console.log('>> reply NOT ok', reply);
+
+          // do not close but show notification in config modal
+          showModalAlert(reply.text);
+        }
+      });
 
     return;
   },

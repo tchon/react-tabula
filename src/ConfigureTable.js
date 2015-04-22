@@ -160,7 +160,12 @@ class ConfigureTable {
           </ul>
         </div>
 
-        <div className="modal fade" id="configure-table-modal" tabIndex="-1" role="dialog" aria-labelledby={this.props.configHeader} aria-hidden="true">
+        <div className="modal fade"
+          id="configure-table-modal"
+          tabIndex="-1" role="dialog"
+          onClick={this.props.onConfigCancel}
+          aria-labelledby={this.props.configHeader}
+          aria-hidden="true">
           <div className="modal-dialog">
             <div className="modal-content">
 
@@ -190,6 +195,7 @@ class ConfigureTable {
               </div>
 
               <div className="modal-footer">
+                <div className="alert alert-danger" role="alert" hidden></div>
                 <button className="btn btn-default" type="button" data-dismiss="modal" onClick={this.props.onConfigCancel}>Cancel</button>
                 <button className="btn btn-primary" onClick={this.props.onConfigSave}>Save changes</button>
               </div>

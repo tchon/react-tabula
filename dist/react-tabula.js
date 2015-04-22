@@ -232,7 +232,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	          )
 	        ), 
 
-	        React.createElement("div", {className: "modal fade", id: "configure-table-modal", tabIndex: "-1", role: "dialog", "aria-labelledby": this.props.configHeader, "aria-hidden": "true"}, 
+	        React.createElement("div", {className: "modal fade", 
+	          id: "configure-table-modal", 
+	          tabIndex: "-1", role: "dialog", 
+	          onClick: this.props.onConfigCancel, 
+	          "aria-labelledby": this.props.configHeader, 
+	          "aria-hidden": "true"}, 
 	          React.createElement("div", {className: "modal-dialog"}, 
 	            React.createElement("div", {className: "modal-content"}, 
 
@@ -262,6 +267,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	              ), 
 
 	              React.createElement("div", {className: "modal-footer"}, 
+	                React.createElement("div", {className: "alert alert-danger", role: "alert", hidden: true}), 
 	                React.createElement("button", {className: "btn btn-default", type: "button", "data-dismiss": "modal", onClick: this.props.onConfigCancel}, "Cancel"), 
 	                React.createElement("button", {className: "btn btn-primary", onClick: this.props.onConfigSave}, "Save changes")
 	              )
@@ -349,6 +355,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      configGroup: '',
 	      configHeader: 'Configure',
 	      configUrl: '',
+	      configBaseRequest: {},
 	      enableConfig: false,
 	      enableExport: false,
 	      initialPageSize: 5,
@@ -460,8 +467,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  onConfigCancel:function() {
+	    this.clearModalAlert();
+
 	    var backup = _.cloneDeep(this.state.configBackup);
 	    this.setState({ config: backup });
+	  },
+
+	  showModalAlert:function(text) {
+	    $('.modal-footer .alert').text(text).show();
+	  },
+
+	  clearModalAlert:function() {
+	    $('.modal-footer .alert').text('').hide();
 	  },
 
 	  onConfigSave:function(e) {
@@ -470,13 +487,27 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    var config = this.state.config;
 	    var url = this.props.configUrl;
+	    var clearModalAlert = this.clearModalAlert;
+	    var showModalAlert = this.showModalAlert;
 
-	    console.log('>> attempting to save configuration', config);
+	    superagent.post(url)
+	      .send(config)
+	      .set('Accept', 'application/json')
+	      .end(function(err, reply) {
+	        if (reply.ok) {
+	          console.log('>> reply ok', reply);
 
-	    superagent.post(url).send(config).end(function(reply) {
-	      console.log('>> reply', reply);
-	    });
+	          // XXX should we be implicitly be using jquery here?
+	          $('#configure-table-modal').modal('hide');
+	          clearModalAlert();
 
+	        } else {
+	          console.log('>> reply NOT ok', reply);
+
+	          // do not close but show notification in config modal
+	          showModalAlert(reply.text);
+	        }
+	      });
 
 	    return;
 	  },
