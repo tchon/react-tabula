@@ -101,26 +101,6 @@ module.exports = {
     };
   },
 
-  onChangeQuickConfig(title) {
-    var config = this.state.config;
-
-    config.children.forEach((child) => {
-      if (_.isEmpty(child)) {
-        return;
-      }
-
-      child.selected = child.title === title ? true : false;
-    });
-
-    this.props.configPrimary = title;
-    this.setState({ config: config });
-    
-    // TODO POST current active config and reload report query
-  },
-
-  onChangeConfig(title) {
-  },
-
   onChangePage(pageNumber) {
     var pageSize = this.state.pageSize;
     var start = pageSize * pageNumber;
@@ -164,10 +144,7 @@ module.exports = {
     $('.modal-footer .alert').text('').hide();
   },
 
-  onConfigSave(e) {
-    e.preventDefault();
-    e.stopPropagation();
-
+  saveConfig(callback) {
     var config = this.state.config;
     var url = this.props.configUrl;
     var clearModalAlert = this.clearModalAlert;
@@ -184,6 +161,8 @@ module.exports = {
           $('#configure-table-modal').modal('hide');
           clearModalAlert();
 
+          callback(reply.text);
+
         } else {
           console.log('>> reply NOT ok', reply);
 
@@ -191,8 +170,38 @@ module.exports = {
           showModalAlert(reply.text);
         }
       });
+  },
 
+  onConfigSave(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    var callback = function(msg){
+        console.log('>>', msg);
+    };
+    this.saveConfig(callback);
     return;
+  },
+
+  onChangeQuickConfig(title) {
+    var config = this.state.config;
+
+    config.children.forEach((child) => {
+      if (_.isEmpty(child)) {
+        return;
+      }
+
+      child.selected = child.title === title ? true : false;
+    });
+
+    this.props.configPrimary = title;
+    this.setState({ config: config });
+
+    // TODO POST current active config and reload report query
+    var callback = function(msg){
+        console.log('>>', msg);
+    };
+    this.saveConfig(callback);
   },
 
   findNode(list, prop) {

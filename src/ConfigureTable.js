@@ -5,9 +5,7 @@ var _ = require('lodash');
 
 class ConfigureTable {
   constructor() {
-    //this.onChangeConfig = this.onChangeConfig.bind(this);
     this.onChangeQuickConfig = this.onChangeQuickConfig.bind(this);
-    this.onChangeConfigLeaf = this.onChangeConfigLeaf.bind(this);
     this.handleChangeLeaf = this.handleChangeLeaf.bind(this);
   }
 
@@ -16,25 +14,6 @@ class ConfigureTable {
     var title = e.target.textContent;
     this.props.onChangeQuickConfig(title);
   }
-
-  onChangeConfigLeaf(e) {
-    if (!e || !e.currentTarget) {
-      return;
-    }
-    e.stopPropagation();
-    e.preventDefault();
-
-    var current = e.currentTarget;
-    if (current.firstChild.firstChild.disabled) {
-      return;
-    }
-
-    var parentProp = current.dataset.parent;
-    var sectionProp = current.dataset.section;
-    var leafProp = current.dataset.leaf;
-
-    this.props.onChangeConfigLeaf(parentProp, sectionProp, leafProp);
-  };
 
   handleChangeLeaf(e) {
     var current = e.currentTarget;
@@ -100,15 +79,12 @@ class ConfigureTable {
       );
     });
 
-    var onChangeConfigLeaf = this.onChangeConfigLeaf;
     var handleChangeLeaf = this.handleChangeLeaf;
     var tabPanes = config.children.map((conf) => {
 
       var sectChildren = [];
       conf.children.map((sect) => {
         var leaves = sect.children.filter((o) => { return o; }).map((leaf) => {
-
-              //onClick={onChangeConfigLeaf}>
           return (
             <div className="checkbox"><label><input type="checkbox"
               defaultChecked={isChecked(leaf)}

@@ -36,7 +36,6 @@ var DataTable = React.createClass({
                 onConfigCancel={this.onConfigCancel}
                 onConfigSave={this.onConfigSave}
                 onChangeConfigLeaf={this.onChangeConfigLeaf}
-                onChangeConfig={this.onChangeConfig}
                 onClickPrimary={this.onClickPrimary}
                 onChangeQuickConfig={this.onChangeQuickConfig}
               />
