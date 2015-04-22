@@ -110,18 +110,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  Object.defineProperty(ConfigureTable.prototype,"handleChangeLeaf",{writable:true,configurable:true,value:function(e) {
 	    var current = e.currentTarget;
-
-	    console.log('>> handleChangeLeaf current.checked', current.checked);
-	    window.current = current;
-
 	    var parent = current.dataset.parent;
 	    var section = current.dataset.section;
 	    var leaf = current.dataset.leaf;
 
-	    console.log(' >> parent:', parent, 'section:', section, 'leaf:', leaf);
-
 	    this.props.onChangeConfigLeaf(current, parent, section, leaf);
-
 	    return e;
 	  }});
 
@@ -488,75 +481,71 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return;
 	  },
 
-	  onChangeConfigLeaf:function(current, parentProp, sectionProp, leafProp) {
-	    var config = this.state.config;
-	    //var config = _.cloneDeep(this.state.config);
+	  findNode:function(list, prop) {
+	    if (_.isEmpty(list)) { return []; }
 
+	    return list.map(
+	      function(obj)  { return obj && obj.prop === prop ? obj : null; }
+	    ).filter(objectExists);
+	  },
+
+	  findLeaf:function(config, parentProp, sectionProp, leafProp) {
 	    // find branch
-	    var branch = config.children.map(function(obj)  {
-	      return obj && obj.prop === parentProp ? obj : null;
-	    }).filter(objectExists);
-	    if (_.isEmpty(branch)) { return; }
+	    var branch = config && config.children.length ?
+	      this.findNode(config.children, parentProp) : [];
 
 	    // find section
-	    var section = branch[0].children.map(function(obj)  {
-	      return obj && obj.prop === sectionProp ? obj : null;
-	    }).filter(objectExists);
-	    if (_.isEmpty(section)) { return; }
+	    var section = branch && branch.length ?
+	      this.findNode(branch[0].children, sectionProp) : []; 
 
 	    // find leaf node
-	    var leaf = section[0].children.filter(objectExists).map(function(obj)  {
-	      return obj && obj.prop === leafProp ? obj : null;
-	    }).filter(objectExists);
-	    if (_.isEmpty(leaf)) { return; }
+	    var leaf = section && section.length ?
+	      this.findNode(section[0].children, leafProp) : [];
 
-	    leaf = leaf[0];
+	    return {
+	      section: section,
+	      leaf: leaf && leaf.length ? leaf[0] : null
+	    };
+	  },
 
+	  onChangeConfigLeaf:function(current, parentProp, sectionProp, leafProp) {
+	    //var config = _.cloneDeep(this.state.config);
+	    var config = this.state.config;
+	    var match = this.findLeaf(config, parentProp, sectionProp, leafProp);
+	    var section = match.section;
+	    var leaf = match.leaf;
+	    if (!leaf) { return; }
 
 	    if (!current.checked) {
 	      leaf.selected = false;
-	      console.log('  >> current not selected - leaf', leaf);
-
 	      // TODO remove disabled attributes
-
 	      this.setState({ config: config });
 	      return;
 	    }
 
 	    // Check if MAX has been exceeded - selection limit rules
 	    var MAX = leaf.group === this.props.configGroup ? 1 : 4;
-	    var selectedSize = 0;
-
 	    var counts = section[0].children.filter(objectExists).map(function(obj)  {
 	      return obj && obj.selected ? 1 : 0;
 	    })
+	    var selectedSize = 0;
 	    selectedSize = counts.reduce(function(a, b)  { return a+b; });
-
 
 	    // dis-allow over-selection
 	    if (selectedSize > MAX) {
-	      console.log('    >> selected count at or exceeded MAX:', MAX, 'leaf', leaf);
-
-	      // disable all other inputs
-
+	      // TODO disable all other inputs
 	      current.checked = false;
 	      leaf.selected = false;
-
 	      this.setState({ config: config });
 	      return current;
-
 	    } else {
-	      // undo prior disables
+	      // TODO remove disabled attributes
 	    }
 
-	    console.log('    >> selected count:', selectedSize, 'leaf:', leaf);
-
 	    leaf.selected = !leaf.selected;
-	    console.log('  >> AFTER leaf update', leaf);
 
 	    // update config
 	    this.setState({ config: config });
-
 	    return current;
 	  },
 
