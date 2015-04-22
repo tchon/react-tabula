@@ -80,6 +80,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    //this.onChangeConfig = this.onChangeConfig.bind(this);
 	    this.onChangeQuickConfig = this.onChangeQuickConfig.bind(this);
 	    this.onChangeConfigLeaf = this.onChangeConfigLeaf.bind(this);
+	    this.handleChangeLeaf = this.handleChangeLeaf.bind(this);
 	  }
 
 	  Object.defineProperty(ConfigureTable.prototype,"onChangeQuickConfig",{writable:true,configurable:true,value:function(e) {
@@ -106,6 +107,23 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    this.props.onChangeConfigLeaf(parentProp, sectionProp, leafProp);
 	  }});;
+
+	  Object.defineProperty(ConfigureTable.prototype,"handleChangeLeaf",{writable:true,configurable:true,value:function(e) {
+	    var current = e.currentTarget;
+
+	    console.log('>> handleChangeLeaf current.checked', current.checked);
+	    window.current = current;
+
+	    var parent = current.dataset.parent;
+	    var section = current.dataset.section;
+	    var leaf = current.dataset.leaf;
+
+	    console.log(' >> parent:', parent, 'section:', section, 'leaf:', leaf);
+
+	    this.props.onChangeConfigLeaf(current, parent, section, leaf);
+
+	    return e;
+	  }});
 
 	  Object.defineProperty(ConfigureTable.prototype,"render",{writable:true,configurable:true,value:function() {
 	    if (!this.props.enabled) {
@@ -149,30 +167,35 @@ return /******/ (function(modules) { // webpackBootstrap
 	      );
 	    }.bind(this));
 
+	    var onClickPrimary = this.props.onClickPrimary;
 	    var tabHeaders = config.children.map(function(conf)  {
 	      return (
 	        React.createElement("li", {className: isActive(conf.title)}, 
-	          React.createElement("a", {href: toId(conf.title), "data-toggle": "tab"}, conf.title)
+	          React.createElement("a", {href: toId(conf.title), 
+	            onClick: onClickPrimary, 
+	            "data-toggle": "tab"}, conf.title)
 	        )
 	      );
 	    });
 
 	    var onChangeConfigLeaf = this.onChangeConfigLeaf;
+	    var handleChangeLeaf = this.handleChangeLeaf;
 	    var tabPanes = config.children.map(function(conf)  {
 
 	      var sectChildren = [];
 	      conf.children.map(function(sect)  {
 	        var leaves = sect.children.filter(function(o)  { return o; }).map(function(leaf)  {
+
+	              //onClick={onChangeConfigLeaf}>
 	          return (
-	            React.createElement("div", {className: "checkbox", 
+	            React.createElement("div", {className: "checkbox"}, React.createElement("label", null, React.createElement("input", {type: "checkbox", 
+	              defaultChecked: isChecked(leaf), 
+	              disabled: isDisabled(leaf), 
+	              onChange: handleChangeLeaf, 
 	              "data-parent": conf.prop, 
 	              "data-section": sect.prop, 
-	              "data-leaf": leaf.prop, 
-	              onClick: onChangeConfigLeaf}, 
-	              React.createElement("label", null, React.createElement("input", {type: "checkbox", 
-	                checked: isChecked(leaf), 
-	                disabled: isDisabled(leaf)}), leaf.title)
-	            )
+	              "data-leaf": leaf.prop}
+	            ), leaf.title))
 	          );
 	        });
 	        sectChildren.push(leaves);
@@ -320,6 +343,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      currentPage: 0,
 	      pageSize: this.props.initialPageSize,
 	      config: this.props.config,
+	      configPrimary: '',
 	      configBackup: _.cloneDeep(this.props.config)
 	    };
 	  },
@@ -330,7 +354,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      columnsPossible: [],
 	      configGroup: '',
 	      configHeader: 'Configure',
-	      configPrimary: '',
 	      configUrl: '',
 	      enableConfig: false,
 	      enableExport: false,
@@ -397,7 +420,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  onChangeQuickConfig:function(title) {
 	    //console.log('>> selected item', title);
 
-	    this.props.configPrimary = title;
+	    this.state.configPrimary = title;
 
 	    // TODO update "active" dropdown, POST changes to server, update table
 	  },
@@ -455,61 +478,93 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return;
 	  },
 
-	  onChangeConfigLeaf:function(parentProp, sectionProp, leafProp) {
+	  onChangeConfigLeaf:function(current, parentProp, sectionProp, leafProp) {
 	    var config = this.state.config;
+	    //var config = _.cloneDeep(this.state.config);
+
+	    // find branch
 	    var branch = config.children.map(function(obj)  {
 	      return obj && obj.prop === parentProp ? obj : null;
 	    }).filter(objectExists);
-
 	    if (_.isEmpty(branch)) { return; }
 
+	    // find section
 	    var section = branch[0].children.map(function(obj)  {
 	      return obj && obj.prop === sectionProp ? obj : null;
 	    }).filter(objectExists);
-
 	    if (_.isEmpty(section)) { return; }
 
+	    // find leaf node
 	    var leaf = section[0].children.filter(objectExists).map(function(obj)  {
 	      return obj && obj.prop === leafProp ? obj : null;
 	    }).filter(objectExists);
+	    if (_.isEmpty(leaf)) { return; }
 
-	    if (_.isEmpty(leaf)) {
-	      return;
-	    }
 	    leaf = leaf[0];
 
-	    // selection limit rules
-	    var MAX = leaf.group === this.props.configGroup ? 2 : 5;
+
+	    if (!current.checked) {
+	      leaf.selected = false;
+	      console.log('  >> current not selected - leaf', leaf);
+
+	      // TODO remove disabled attributes
+
+	      this.setState({ config: config });
+	      return;
+	    }
+
+	    // Check if MAX has been exceeded - selection limit rules
+	    var MAX = leaf.group === this.props.configGroup ? 1 : 4;
 	    var selectedSize = 0;
-	    selectedSize = section[0].children.filter(objectExists).map(function(obj)  {
-	      return obj.selected ? 1 : 0;
-	    }).reduce(function(a, b)  { return a+b; });
+
+	    var counts = section[0].children.filter(objectExists).map(function(obj)  {
+	      return obj && obj.selected ? 1 : 0;
+	    })
+	    selectedSize = counts.reduce(function(a, b)  { return a+b; });
+
 
 	    // dis-allow over-selection
-	    if (selectedSize >= MAX && !leaf.selected) {
-	      return null;
-	    }
+	    if (selectedSize > MAX) {
+	      console.log('    >> selected count at or exceeded MAX:', MAX, 'leaf', leaf);
 
-	    // toggle "selected" value of leaf
-	    leaf.selected = !leaf.selected;
+	      // disable all other inputs
 
+	      current.checked = false;
+	      leaf.selected = false;
 
-	    if (selectedSize === MAX -1 && leaf.selected) {
-	      // add disable attribute to others
-	      section[0].children.filter(objectExists).forEach(function(obj)  {
-	        obj.disabled = !obj.selected ? true : false;
-	      });
+	      this.setState({ config: config });
+	      return current;
+
 	    } else {
-	      // remove disable attribute to others
-	      section[0].children.filter(objectExists).forEach(function(obj)  {
-	        obj.disabled = false;
-	      });
+	      // undo prior disables
 	    }
+
+	    console.log('    >> selected count:', selectedSize, 'leaf:', leaf);
+
+	    leaf.selected = !leaf.selected;
+	    console.log('  >> AFTER leaf update', leaf);
 
 	    // update config
 	    this.setState({ config: config });
-	  }
 
+	    return current;
+	  },
+
+
+	  onClickPrimary:function(e) {
+	    var config = this.state.config;
+	    var title = e.currentTarget.textContent;
+
+	    config.children.forEach(function(child)  {
+	      if (_.isEmpty(child)) {
+	        return;
+	      }
+
+	      child.selected = child.title === title ? true : false;
+	    });
+
+	    this.setState({ config: config });
+	  }
 	};
 
 
@@ -556,6 +611,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                onConfigSave: this.onConfigSave, 
 	                onChangeConfigLeaf: this.onChangeConfigLeaf, 
 	                onChangeConfig: this.onChangeConfig, 
+	                onClickPrimary: this.onClickPrimary, 
 	                onChangeQuickConfig: this.onChangeQuickConfig}
 	              ), 
 	              React.createElement(ExportButton, {enabled: this.props.enableExport})

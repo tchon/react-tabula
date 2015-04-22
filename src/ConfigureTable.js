@@ -95,10 +95,13 @@ class ConfigureTable {
       );
     });
 
+    var onClickPrimary = this.props.onClickPrimary;
     var tabHeaders = config.children.map((conf) => {
       return (
         <li className={isActive(conf.title)}>
-          <a href={toId(conf.title)} data-toggle="tab">{conf.title}</a>
+          <a href={toId(conf.title)}
+            onClick={onClickPrimary}
+            data-toggle="tab">{conf.title}</a>
         </li>
       );
     });

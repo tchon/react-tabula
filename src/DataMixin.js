@@ -26,6 +26,7 @@ module.exports = {
       currentPage: 0,
       pageSize: this.props.initialPageSize,
       config: this.props.config,
+      configPrimary: '',
       configBackup: _.cloneDeep(this.props.config)
     };
   },
@@ -36,7 +37,6 @@ module.exports = {
       columnsPossible: [],
       configGroup: '',
       configHeader: 'Configure',
-      configPrimary: '',
       configUrl: '',
       enableConfig: false,
       enableExport: false,
@@ -103,7 +103,7 @@ module.exports = {
   onChangeQuickConfig(title) {
     //console.log('>> selected item', title);
 
-    this.props.configPrimary = title;
+    this.state.configPrimary = title;
 
     // TODO update "active" dropdown, POST changes to server, update table
   },
@@ -163,47 +163,38 @@ module.exports = {
 
   onChangeConfigLeaf(current, parentProp, sectionProp, leafProp) {
     var config = this.state.config;
-
     //var config = _.cloneDeep(this.state.config);
 
     // find branch
     var branch = config.children.map((obj) => {
       return obj && obj.prop === parentProp ? obj : null;
     }).filter(objectExists);
-
     if (_.isEmpty(branch)) { return; }
 
     // find section
     var section = branch[0].children.map((obj) => {
       return obj && obj.prop === sectionProp ? obj : null;
     }).filter(objectExists);
-
     if (_.isEmpty(section)) { return; }
 
     // find leaf node
     var leaf = section[0].children.filter(objectExists).map((obj) => {
       return obj && obj.prop === leafProp ? obj : null;
     }).filter(objectExists);
-
-    if (_.isEmpty(leaf)) {
-      return;
-    }
+    if (_.isEmpty(leaf)) { return; }
 
     leaf = leaf[0];
 
 
     if (!current.checked) {
-      console.log('  >> current not selected');
-
       leaf.selected = false;
+      console.log('  >> current not selected - leaf', leaf);
 
       // TODO remove disabled attributes
 
       this.setState({ config: config });
       return;
     }
-
-    console.log('  >> BEFORE leaf', leaf);
 
     // Check if MAX has been exceeded - selection limit rules
     var MAX = leaf.group === this.props.configGroup ? 1 : 4;
@@ -231,7 +222,7 @@ module.exports = {
       // undo prior disables
     }
 
-    console.log('    >> selected count:', selectedSize);
+    console.log('    >> selected count:', selectedSize, 'leaf:', leaf);
 
     leaf.selected = !leaf.selected;
     console.log('  >> AFTER leaf update', leaf);
@@ -240,6 +231,21 @@ module.exports = {
     this.setState({ config: config });
 
     return current;
-  }
+  },
 
+
+  onClickPrimary(e) {
+    var config = this.state.config;
+    var title = e.currentTarget.textContent;
+
+    config.children.forEach((child) => {
+      if (_.isEmpty(child)) {
+        return;
+      }
+
+      child.selected = child.title === title ? true : false;
+    });
+
+    this.setState({ config: config });
+  }
 };

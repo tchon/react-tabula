@@ -37,6 +37,7 @@ var DataTable = React.createClass({
                 onConfigSave={this.onConfigSave}
                 onChangeConfigLeaf={this.onChangeConfigLeaf}
                 onChangeConfig={this.onChangeConfig}
+                onClickPrimary={this.onClickPrimary}
                 onChangeQuickConfig={this.onChangeQuickConfig}
               />
               <ExportButton enabled={this.props.enableExport} />
