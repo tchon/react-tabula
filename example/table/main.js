@@ -67,6 +67,7 @@ Fixtures.prototype.initConfig = function() {
   this.buildBranch = this.buildBranch.bind(this);
   // build configuration branches
   var primaries = _.cloneDeep(this.taxonomyAll).map(this.buildBranch);
+  primaries[0].selected = true;
 
   // configuration tree
   this.config = { title: 'Taxonomy', prop: 'root', children: primaries };
@@ -96,6 +97,7 @@ Fixtures.prototype.buildBranch = function(primary) {
   };
 
   primary.children = [ additionalTaxonomySection, additionalBehaviorSection ]; 
+  primary.selected = false;
   return primary
 };
 
