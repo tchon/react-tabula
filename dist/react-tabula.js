@@ -77,9 +77,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	  function ConfigureTable() {
-	    //this.onChangeConfig = this.onChangeConfig.bind(this);
 	    this.onChangeQuickConfig = this.onChangeQuickConfig.bind(this);
-	    this.onChangeConfigLeaf = this.onChangeConfigLeaf.bind(this);
 	    this.handleChangeLeaf = this.handleChangeLeaf.bind(this);
 	  }
 
@@ -88,25 +86,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var title = e.target.textContent;
 	    this.props.onChangeQuickConfig(title);
 	  }});
-
-	  Object.defineProperty(ConfigureTable.prototype,"onChangeConfigLeaf",{writable:true,configurable:true,value:function(e) {
-	    if (!e || !e.currentTarget) {
-	      return;
-	    }
-	    e.stopPropagation();
-	    e.preventDefault();
-
-	    var current = e.currentTarget;
-	    if (current.firstChild.firstChild.disabled) {
-	      return;
-	    }
-
-	    var parentProp = current.dataset.parent;
-	    var sectionProp = current.dataset.section;
-	    var leafProp = current.dataset.leaf;
-
-	    this.props.onChangeConfigLeaf(parentProp, sectionProp, leafProp);
-	  }});;
 
 	  Object.defineProperty(ConfigureTable.prototype,"handleChangeLeaf",{writable:true,configurable:true,value:function(e) {
 	    var current = e.currentTarget;
@@ -172,15 +151,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      );
 	    });
 
-	    var onChangeConfigLeaf = this.onChangeConfigLeaf;
 	    var handleChangeLeaf = this.handleChangeLeaf;
 	    var tabPanes = config.children.map(function(conf)  {
 
 	      var sectChildren = [];
 	      conf.children.map(function(sect)  {
 	        var leaves = sect.children.filter(function(o)  { return o; }).map(function(leaf)  {
-
-	              //onClick={onChangeConfigLeaf}>
 	          return (
 	            React.createElement("div", {className: "checkbox"}, React.createElement("label", null, React.createElement("input", {type: "checkbox", 
 	              defaultChecked: isChecked(leaf), 
@@ -418,26 +394,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	  },
 
-	  onChangeQuickConfig:function(title) {
-	    var config = this.state.config;
-
-	    config.children.forEach(function(child)  {
-	      if (_.isEmpty(child)) {
-	        return;
-	      }
-
-	      child.selected = child.title === title ? true : false;
-	    });
-
-	    this.props.configPrimary = title;
-	    this.setState({ config: config });
-	    
-	    // TODO POST current active config and reload report query
-	  },
-
-	  onChangeConfig:function(title) {
-	  },
-
 	  onChangePage:function(pageNumber) {
 	    var pageSize = this.state.pageSize;
 	    var start = pageSize * pageNumber;
@@ -481,10 +437,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    $('.modal-footer .alert').text('').hide();
 	  },
 
-	  onConfigSave:function(e) {
-	    e.preventDefault();
-	    e.stopPropagation();
-
+	  saveConfig:function(callback) {
 	    var config = this.state.config;
 	    var url = this.props.configUrl;
 	    var clearModalAlert = this.clearModalAlert;
@@ -501,6 +454,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	          $('#configure-table-modal').modal('hide');
 	          clearModalAlert();
 
+	          callback(reply.text);
+
 	        } else {
 	          console.log('>> reply NOT ok', reply);
 
@@ -508,8 +463,38 @@ return /******/ (function(modules) { // webpackBootstrap
 	          showModalAlert(reply.text);
 	        }
 	      });
+	  },
 
+	  onConfigSave:function(e) {
+	    e.preventDefault();
+	    e.stopPropagation();
+
+	    var callback = function(msg){
+	        console.log('>>', msg);
+	    };
+	    this.saveConfig(callback);
 	    return;
+	  },
+
+	  onChangeQuickConfig:function(title) {
+	    var config = this.state.config;
+
+	    config.children.forEach(function(child)  {
+	      if (_.isEmpty(child)) {
+	        return;
+	      }
+
+	      child.selected = child.title === title ? true : false;
+	    });
+
+	    this.props.configPrimary = title;
+	    this.setState({ config: config });
+
+	    // TODO POST current active config and reload report query
+	    var callback = function(msg){
+	        console.log('>>', msg);
+	    };
+	    this.saveConfig(callback);
 	  },
 
 	  findNode:function(list, prop) {
@@ -640,7 +625,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	                onConfigCancel: this.onConfigCancel, 
 	                onConfigSave: this.onConfigSave, 
 	                onChangeConfigLeaf: this.onChangeConfigLeaf, 
-	                onChangeConfig: this.onChangeConfig, 
 	                onClickPrimary: this.onClickPrimary, 
 	                onChangeQuickConfig: this.onChangeQuickConfig}
 	              ), 
