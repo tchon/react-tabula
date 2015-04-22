@@ -439,12 +439,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  saveConfig:function(callback) {
 	    var config = this.state.config;
+	    var baseRequest = _.cloneDeep(this.props.configBaseRequest);
+	    var payload = _.merge(baseRequest, { "configuration": config });
 	    var url = this.props.configUrl;
 	    var clearModalAlert = this.clearModalAlert;
 	    var showModalAlert = this.showModalAlert;
 
 	    superagent.post(url)
-	      .send(config)
+	      .send(payload)
 	      .set('Accept', 'application/json')
 	      .end(function(err, reply) {
 	        if (reply.ok) {
@@ -454,13 +456,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	          $('#configure-table-modal').modal('hide');
 	          clearModalAlert();
 
-	          callback(reply.text);
+	          callback('successfully posted configuration');
 
 	        } else {
 	          console.log('>> reply NOT ok', reply);
 
 	          // do not close but show notification in config modal
-	          showModalAlert(reply.text);
+	          showModalAlert('cannot save configuration right now');
 	        }
 	      });
 	  },
