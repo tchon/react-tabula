@@ -8,6 +8,7 @@ class ConfigureTable {
     //this.onChangeConfig = this.onChangeConfig.bind(this);
     this.onChangeQuickConfig = this.onChangeQuickConfig.bind(this);
     this.onChangeConfigLeaf = this.onChangeConfigLeaf.bind(this);
+    this.handleChangeLeaf = this.handleChangeLeaf.bind(this);
   }
 
   onChangeQuickConfig(e) {
@@ -34,6 +35,23 @@ class ConfigureTable {
 
     this.props.onChangeConfigLeaf(parentProp, sectionProp, leafProp);
   };
+
+  handleChangeLeaf(e) {
+    var current = e.currentTarget;
+
+    console.log('>> handleChangeLeaf current.checked', current.checked);
+    window.current = current;
+
+    var parent = current.dataset.parent;
+    var section = current.dataset.section;
+    var leaf = current.dataset.leaf;
+
+    console.log(' >> parent:', parent, 'section:', section, 'leaf:', leaf);
+
+    this.props.onChangeConfigLeaf(current, parent, section, leaf);
+
+    return e;
+  }
 
   render() {
     if (!this.props.enabled) {
@@ -86,21 +104,23 @@ class ConfigureTable {
     });
 
     var onChangeConfigLeaf = this.onChangeConfigLeaf;
+    var handleChangeLeaf = this.handleChangeLeaf;
     var tabPanes = config.children.map((conf) => {
 
       var sectChildren = [];
       conf.children.map((sect) => {
         var leaves = sect.children.filter((o) => { return o; }).map((leaf) => {
+
+              //onClick={onChangeConfigLeaf}>
           return (
-            <div className="checkbox"
+            <div className="checkbox"><label><input type="checkbox"
+              defaultChecked={isChecked(leaf)}
+              disabled={isDisabled(leaf)}
+              onChange={handleChangeLeaf}
               data-parent={conf.prop}
               data-section={sect.prop}
               data-leaf={leaf.prop}
-              onClick={onChangeConfigLeaf}>
-              <label><input type="checkbox"
-                checked={isChecked(leaf)}
-                disabled={isDisabled(leaf)}/>{leaf.title}</label>
-            </div>
+            />{leaf.title}</label></div>
           );
         });
         sectChildren.push(leaves);

@@ -161,20 +161,26 @@ module.exports = {
     return;
   },
 
-  onChangeConfigLeaf(parentProp, sectionProp, leafProp) {
+  onChangeConfigLeaf(current, parentProp, sectionProp, leafProp) {
     var config = this.state.config;
+
+    //var config = _.cloneDeep(this.state.config);
+
+    // find branch
     var branch = config.children.map((obj) => {
       return obj && obj.prop === parentProp ? obj : null;
     }).filter(objectExists);
 
     if (_.isEmpty(branch)) { return; }
 
+    // find section
     var section = branch[0].children.map((obj) => {
       return obj && obj.prop === sectionProp ? obj : null;
     }).filter(objectExists);
 
     if (_.isEmpty(section)) { return; }
 
+    // find leaf node
     var leaf = section[0].children.filter(objectExists).map((obj) => {
       return obj && obj.prop === leafProp ? obj : null;
     }).filter(objectExists);
@@ -182,38 +188,58 @@ module.exports = {
     if (_.isEmpty(leaf)) {
       return;
     }
+
     leaf = leaf[0];
 
-    // selection limit rules
-    var MAX = leaf.group === this.props.configGroup ? 2 : 5;
+
+    if (!current.checked) {
+      console.log('  >> current not selected');
+
+      leaf.selected = false;
+
+      // TODO remove disabled attributes
+
+      this.setState({ config: config });
+      return;
+    }
+
+    console.log('  >> BEFORE leaf', leaf);
+
+    // Check if MAX has been exceeded - selection limit rules
+    var MAX = leaf.group === this.props.configGroup ? 1 : 4;
     var selectedSize = 0;
-    selectedSize = section[0].children.filter(objectExists).map((obj) => {
-      return obj.selected ? 1 : 0;
-    }).reduce((a, b) => { return a+b; });
+
+    var counts = section[0].children.filter(objectExists).map((obj) => {
+      return obj && obj.selected ? 1 : 0;
+    })
+    selectedSize = counts.reduce((a, b) => { return a+b; });
+
 
     // dis-allow over-selection
-    if (selectedSize >= MAX && !leaf.selected) {
-      return null;
-    }
+    if (selectedSize > MAX) {
+      console.log('    >> selected count at or exceeded MAX:', MAX, 'leaf', leaf);
 
-    // toggle "selected" value of leaf
-    leaf.selected = !leaf.selected;
+      // disable all other inputs
 
+      current.checked = false;
+      leaf.selected = false;
 
-    if (selectedSize === MAX -1 && leaf.selected) {
-      // add disable attribute to others
-      section[0].children.filter(objectExists).forEach((obj) => {
-        obj.disabled = !obj.selected ? true : false;
-      });
+      this.setState({ config: config });
+      return current;
+
     } else {
-      // remove disable attribute to others
-      section[0].children.filter(objectExists).forEach((obj) => {
-        obj.disabled = false;
-      });
+      // undo prior disables
     }
+
+    console.log('    >> selected count:', selectedSize);
+
+    leaf.selected = !leaf.selected;
+    console.log('  >> AFTER leaf update', leaf);
 
     // update config
     this.setState({ config: config });
+
+    return current;
   }
 
 };
