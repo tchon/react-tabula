@@ -101,6 +101,7 @@ class ConfigureTable {
 
       var counter = 0;
       var sections = conf.children.map((sect) => {
+        if (!sect.selected) { return; }
         return (
           <div className="panel panel-default ns-panel-default">
             <div className="panel panel-heading ns-panel-heading">{sect.title}</div>
@@ -109,7 +110,7 @@ class ConfigureTable {
             </div>
           </div>
         )
-      });
+      }).filter((o) => { return o; });
 
       return (
         <div className={isActivePane(conf.title)} id={toKey(conf.title)}>
