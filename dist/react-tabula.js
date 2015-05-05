@@ -156,6 +156,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      var sectChildren = [];
 	      conf.children.map(function(sect)  {
+	        if (!sect.selected) { return; }
+
 	        var leaves = sect.children.filter(function(o)  { return o; }).map(function(leaf)  {
 	          return (
 	            React.createElement("div", {className: "checkbox"}, React.createElement("label", null, React.createElement("input", {type: "checkbox", 
@@ -169,10 +171,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	          );
 	        });
 	        sectChildren.push(leaves);
-	      });
+	      }).filter(function(o)  { return o; });
 
 	      var counter = 0;
 	      var sections = conf.children.map(function(sect)  {
+	        if (!sect.selected) { return; }
+
 	        return (
 	          React.createElement("div", {className: "panel panel-default ns-panel-default"}, 
 	            React.createElement("div", {className: "panel panel-heading ns-panel-heading"}, sect.title), 
@@ -181,7 +185,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            )
 	          )
 	        )
-	      });
+	      }).filter(function(o)  { return o; });
 
 	      return (
 	        React.createElement("div", {className: isActivePane(conf.title), id: toKey(conf.title)}, 
