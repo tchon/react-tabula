@@ -86,6 +86,7 @@ Fixtures.prototype.buildBranch = function(primary) {
       title: 'Additional categories',
       prop: 'additional',
       group: 'section',
+      selected: false,
       children: secondaries
   };
 
@@ -93,6 +94,7 @@ Fixtures.prototype.buildBranch = function(primary) {
       title: 'Behaviors',
       prop: 'behaviors',
       group: 'section',
+      selected: true,
       children: behaviors
   };
 

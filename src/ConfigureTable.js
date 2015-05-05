@@ -84,6 +84,8 @@ class ConfigureTable {
 
       var sectChildren = [];
       conf.children.map((sect) => {
+        if (!sect.selected) { return; }
+
         var leaves = sect.children.filter((o) => { return o; }).map((leaf) => {
           return (
             <div className="checkbox"><label><input type="checkbox"
@@ -97,10 +99,12 @@ class ConfigureTable {
           );
         });
         sectChildren.push(leaves);
-      });
+      }).filter((o) => { return o; });
 
       var counter = 0;
       var sections = conf.children.map((sect) => {
+        if (!sect.selected) { return; }
+
         return (
           <div className="panel panel-default ns-panel-default">
             <div className="panel panel-heading ns-panel-heading">{sect.title}</div>
@@ -109,7 +113,7 @@ class ConfigureTable {
             </div>
           </div>
         )
-      });
+      }).filter((o) => { return o; });
 
       return (
         <div className={isActivePane(conf.title)} id={toKey(conf.title)}>
