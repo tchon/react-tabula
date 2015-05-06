@@ -109,3 +109,6 @@
 .ns-btn-toolbar {
   margin-left: 0;
 }
+.ns-btn-label {
+  padding-right: 5px;
+}

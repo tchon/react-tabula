@@ -126,17 +126,14 @@ class ConfigureTable {
     return (
       <div className="configure-table-wrapper">
         <div className="btn-group">
-          <button type="button" className="btn btn-default" data-toggle="modal" data-target="#configure-table-modal">Configure</button>
-
           <button type="button" className="btn btn-default dropdown-toggle"
             data-toggle="dropdown" aria-expanded="false">
+            <span className="ns-btn-label">Configure</span>
             <span className="caret"></span>
             <span className="sr-only">Toggle Dropdown</span>
           </button>
           <ul className="dropdown-menu" role="menu">
             {shortCutConfigs}
-            <li className="divider"></li>
-            <li data-toggle="modal" data-target="#configure-table-modal"><a href="#">Configure</a></li>
           </ul>
         </div>
 
