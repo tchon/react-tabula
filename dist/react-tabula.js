@@ -198,17 +198,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return (
 	      React.createElement("div", {className: "configure-table-wrapper"}, 
 	        React.createElement("div", {className: "btn-group"}, 
-	          React.createElement("button", {type: "button", className: "btn btn-default", "data-toggle": "modal", "data-target": "#configure-table-modal"}, "Configure"), 
-
 	          React.createElement("button", {type: "button", className: "btn btn-default dropdown-toggle", 
 	            "data-toggle": "dropdown", "aria-expanded": "false"}, 
+	            React.createElement("span", {className: "ns-btn-label"}, "Configure"), 
 	            React.createElement("span", {className: "caret"}), 
 	            React.createElement("span", {className: "sr-only"}, "Toggle Dropdown")
 	          ), 
 	          React.createElement("ul", {className: "dropdown-menu", role: "menu"}, 
-	            shortCutConfigs, 
-	            React.createElement("li", {className: "divider"}), 
-	            React.createElement("li", {"data-toggle": "modal", "data-target": "#configure-table-modal"}, React.createElement("a", {href: "#"}, "Configure"))
+	            shortCutConfigs
 	          )
 	        ), 
 
